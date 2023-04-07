@@ -25,7 +25,14 @@ public class Feriado {
 
 	public void setDate(LocalDate date) {
 		this.date = date;
-	}	
+	}
+
+	@Override
+	public String toString() {
+		return "Feriado [description=" + description + ", date=" + date + "]";
+	}
+	
+	
 	
 
 }

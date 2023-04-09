@@ -1,3 +1,4 @@
+
 package com.pedroza.calculaprazoestado.model;
 
 import java.time.LocalDate;

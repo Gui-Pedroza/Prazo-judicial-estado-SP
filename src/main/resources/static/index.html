@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<!-- Utilizando a folha de estilos temporariamente na forma 'interna' ante a impossibilida de spring reconhecer a CSS
+	<link rel="stylesheet" type="text/css" th:href="@{style.css}"> -->
+	<!-- icones Google Icons -->
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+	<script>
+		function showDaysToAddInput() {
+			var dropdown = document.getElementById("days-to-add-dropdown");
+			var selectedValue = dropdown.options[dropdown.selectedIndex].value;
+			var outroQuantidade = document.getElementById("outro-quantidade");
+
+			if (selectedValue === "outro") {
+				outroQuantidade.style.display = "block";
+			} else {
+				outroQuantidade.style.display = "none";
+			}
+		}
+		function sendData() {
+			fetch
+			// Recebe os dados do usuário
+			var startDate = document.getElementById("start-date").value;
+			var daysToAddDropdown = document.getElementById("days-to-add-dropdown");
+			var daysToAddCustom = document.getElementById("days-to-add-custom");
+			var daysToAdd = daysToAddDropdown.value;
+
+			if (daysToAdd === "outro") {
+				daysToAdd = daysToAddCustom.value;
+			}
+
+			var city = document.getElementById("city").value;
+
+			if (city === "") {
+				alert("Por favor, selecione uma cidade.");
+				return;
+			}
+
+			// Envia os dados usando AJAX
+			var xhr = new XMLHttpRequest();
+			xhr.open("POST", "/" + city, true);
+			xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			xhr.onreadystatechange = function () {
+				if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+					// Atualiza a pagina com o resultado
+					var resultElement = document.getElementById("result");
+					var resultText = "O seu prazo final é: " + new Date(xhr.responseText)
+						.toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" });
+					resultElement.textContent = resultText
+				}
+			};
+			xhr.send("startDate=" + startDate + "&daysToAdd=" + daysToAdd);
+		}
+	</script>
+	<title>Calculadora de prazos</title>
+	<style>
+		* {
+			font-family: Arial, Helvetica, sans-serif;
+			padding: 8px;
+			border-radius: 10px;
+		}
+		h1 {
+			margin-top: 15px;
+			font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+			font-size: 50px;
+			text-align: center;
+		}
+		h2 {
+			margin-left: 10px;
+			color: #f1f0ea;
+			margin-bottom: 0px;
+		}
+		.informacoes {
+			font-family: Verdana, Geneva, Tahoma, sans-serif;
+			color: #f1f0ea;
+			font-size: 16px;
+			text-align: justify;
+			text-indent: 25px;									
+		}
+		a {
+			color: #f1f0ea;
+		}
+		a:hover {
+			color: darkgray;
+		}
+		body {
+			background-image: linear-gradient(to right, #2d232e, #474448, #534b52);
+		}
+		.form-group {
+			background-color: #d5bf86;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			width: 400px;
+			padding: 30px;
+			margin: auto;
+			text-align: justify;
+			font-size: 20px;
+			box-shadow: 5px 5px 20px black;
+		}
+		#city,
+		#start-date,
+		#days-to-add-dropdown {
+			background-color: #e0ddcf;
+			font-size: 16px;
+			box-shadow: 5px 5px 10px rgb(75, 75, 75);
+			margin-bottom: 10px;
+		}
+		#outro-quantidade {
+			font-size: 20px;
+			text-align: left;
+		}
+		#days-to-add-custom {
+			background-color: #e0ddcf;
+			font-size: 16px;
+			box-shadow: 5px 5px 10px rgb(75, 75, 75);
+			width: 120px;
+		}
+		button {
+			margin-bottom: 20px;
+			text-align: left;
+			width: 150px;
+			background-color: #c4a149;
+			font-size: 16px;
+			font-weight: bold;
+			box-shadow: 5px 5px 10px rgb(75, 75, 75);
+		}
+		button:active {
+			transform: scale(0.98);
+			box-shadow: 3px 3px 7px rgb(75, 75, 75);
+		}
+		span {
+			padding: 0;
+			margin-left: 0;
+			font-size: 16px;
+		}
+		footer {
+			margin-top: 60px;
+			color: grey;
+		}
+		.destaque {
+			font-weight: bold;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>Calculadora de prazos processuais cíveis.</h1>
+	<h2>Digite a data de seu prazo inicial e a quantidade de dias do seu prazo</h2>
+	<div class="informacoes">		
+		<p>
+			O sistema a seguir é uma ferramenta simples para mera consulta de prazos processuais cíveis no âmbito do
+			Tribunal
+			de Justiça
+			do Estado de São Paulo a fim de auxiliar advogados, serventia e colegas de trabalho, especialmente da
+			Comarca de
+			Ribeirão Preto.<br>
+			A calculadora de prazos é específica para processos <span class="destaque">digitais</span> da área cível de 01/01/2019 atualizado até 31/12/2023.
+		</p>
+		<p>
+			O resultado informado é calculado em dias úteis e com base na tabela de feriados e suspensão de prazos do
+			site do<a href="https://www.tjsp.jus.br/CanaisComunicacao/Feriados/ExpedienteForense" target="_blank"
+				rel="external">Tribunal de Justiça</a> de acordo com cada região.<br>
+			No campo "Data inicial", digite a data do início do prazo, que poderá ser a data da publicação no DJE, data da juntada do Mandado ou AR, ou data da ciência do Ministério Público ou Defensoria no portal.<br>
+			Caso a data inicial coincida com feriado ou final de semana, o sistema automaticamente irá considerar o próximo dia útil subsequente no cálculo.
+				
+		</p>
+		<p><span class="destaque">Atenção:</span> Verifique<a href="https://www.tjsp.jus.br/Indisponibilidade/Comunicados" target="_blank" rel="external">neste link</a>se a data do seu prazo final se enquadra em algumas das situações de indisponibilidade de sistemas, caso em que o prazo final será prorrogado para o dia útil seguinte á retomada de funcionamento do serviço (<em>Artigo 3º do Provimento CG Nº 26/2013</em>).</p>
+	</div>
+
+	<div class="form-group">
+		<!-- <label>Data da disponibilização no DO?</label>
+		<label><input type="radio" name="do-date" value="sim">Sim</label>
+		<label><input type="radio" name="do-date" value="nao" checked>Não</label> -->
+		<label for="start-date">Data inicial:</label>
+		<input type="date" id="start-date" />
+
+		<label for="city">Escolha a cidade:</label>
+		<select id="city" class="form-control" name="city">
+			<option value="">Selecione uma cidade</option>
+			<option value="ribeirao-preto">Ribeirão Preto</option>
+			<option value="campinas">Campinas</option>
+			<option value="presidente-prudente">Presidente Prudente</option>
+			<option value="marilia">Marília</option>
+		</select>
+		<label for="days-to-add-dropdown">Escolha a quantidade de dias:</label>
+		<select id="days-to-add-dropdown" class="form-control" name="days-to-add-dropdown"
+			onchange="showDaysToAddInput()">
+			<option value="5">5 dias</option>
+			<option value="15">15 dias</option>
+			<option value="30">30 dias</option>
+			<option value="60">60 dias</option>
+			<option value="outro">Outro</option>
+		</select>
+		<div>
+			<div id="outro-quantidade" style="display: none;">
+				<label for="days-to-add-custom">Outra quantidade:</label>
+				<input type="number" id="days-to-add-custom" placeholder="Digite o prazo" />
+			</div>
+			<br>
+			<button onclick="sendData()"><span class="material-symbols-outlined">
+					schedule
+				</span>Calcular</button>
+			<br>
+			<button onclick="window.location.reload()"><span class="material-symbols-outlined">
+					backspace
+				</span>Limpar</button>
+			<br>
+			<div id="result"></div>
+			<br>
+
+		</div>
+	</div>
+	<footer>Criado por Guilherme Pedroza
+		<br>
+		contato gpedroza@tjsp.jus.br
+	</footer>
+</body>
+
+</html>

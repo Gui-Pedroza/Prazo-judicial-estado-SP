@@ -17,10 +17,11 @@ import com.pedroza.calculaprazoestado.model.Feriado;
 @Repository
 public class FeriadoRepository {
 	
-	@Autowired
-	HttpClient mHttpClient;
     private static final String BASE_URL = "https://www.tjsp.jus.br/CanaisComunicacao/Feriados/";
     private Gson gson = new Gson();
+    
+    @Autowired
+    HttpClient mHttpClient;
     
     public FeriadoRepository(HttpClient httpClient) {
         mHttpClient = httpClient;

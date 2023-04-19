@@ -24,7 +24,8 @@ public class PrazoController {
 	@PostMapping("/{city}")
 	public ResponseEntity<LocalDate> calculate(@RequestParam("startDate") LocalDate startDate,
 			@RequestParam("daysToAdd") int daysToAdd, @PathVariable("city") String city) {
-		PrazoService service = PrazoService.selecionaCidade(city);	
+		service.setAno("2020"); // hard code para teste, após, trocar para argumento a receber via @RequestParam
+		service.setMunicipio(city); 
 		service.loadHolidays();
 		LocalDate newDate = service.addBusinessDays(startDate, daysToAdd);
 		return new ResponseEntity<LocalDate>(newDate, HttpStatus.OK);

@@ -1,8 +1,9 @@
 package com.pedroza.calculaprazoestado.service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,38 +17,68 @@ import com.pedroza.calculaprazoestado.repository.SuspensaoRepository;
 
 @Service
 public class PrazoService {
-	
+
 	private String municipio;
-	private String ano;	
+	private String ano;
+
+	// @Autowired
+	// HttpClient httpClient;	
 	
-	@Autowired
-    HttpClient mHttpClient;
-	
+	public PrazoService() {
+		
+	}
 	public PrazoService(String municipio, String ano) {
 		this.municipio = municipio;
 		this.ano = ano;
-	}	
-	
-	public String getMunicipio() {return this.municipio;}
-	public void setMunicipio(String municipio) {this.municipio = municipio;}
+	}
 
-	public String getAno() {return ano;}
-	public void setAno(String ano) {this.ano = ano;}
+	public String getMunicipio() {
+		return this.municipio;
+	}
+
+	public void setMunicipio(String municipio) {
+		this.municipio = municipio;
+	}
+
+	public String getAno() {
+		return ano;
+	}
+
+	public void setAno(String ano) {
+		this.ano = ano;
+	}
+
+	FeriadoRepository feriadoRepository = new FeriadoRepository(new HttpClient());
+	SuspensaoRepository suspensaoRepository = new SuspensaoRepository(new HttpClient());
+
+	List<Feriado> feriados = feriadoRepository.getFeriados(ano, municipio);
+	List<Suspensao> suspensoes = suspensaoRepository.getSuspensoes(ano, municipio);
+	List<LocalDate> feriadosESuspensoes = FeriadoESuspensaoMerger.merge(feriados, suspensoes);
+
+	private Predicate<LocalDate> isWeekend = date -> date.getDayOfWeek() == DayOfWeek.SATURDAY
+			|| date.getDayOfWeek() == DayOfWeek.SUNDAY;
+
+	private Predicate<LocalDate> isHoliday = date -> feriadosESuspensoes.contains(date);
+
 	
-	FeriadoRepository feriadoRepository = new FeriadoRepository(mHttpClient);
-	SuspensaoRepository suspensaoRepository = new SuspensaoRepository(mHttpClient);
-	
-	
-	// meter tudo List ou voltar para ArrayList
-	List<Feriado> feriados = feriadoRepository.getFeriados("2023", "Ribeirão Preto");
-	List<Suspensao> suspensoes = suspensaoRepository.getSuspensoes("2023", "Ribeirão Preto");
-    List<LocalDate> feriadosESuspensoes = FeriadoESuspensaoMerger.merge(feriados, suspensoes);
-	
-	
-	
-	
-	
-	
-	
+	public LocalDate addBusinessDays(LocalDate startDate, int days) {
+
+		LocalDate result = diaUtilSubsequente(startDate);
+		while (days > 0) {
+			result = result.plusDays(1);
+			if (isHoliday.or(isWeekend).negate().test(result)) {
+				days--;
+			}
+		}
+		return result;
+	}
+
+	public LocalDate diaUtilSubsequente(LocalDate startDate) {
+		LocalDate proximoDia = startDate;
+		while (isHoliday.or(isWeekend).test(proximoDia)) {
+			proximoDia = proximoDia.plusDays(1);
+		}
+		return proximoDia;
+	}
 
 }

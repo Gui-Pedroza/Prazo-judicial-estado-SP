@@ -2,11 +2,18 @@ package com.pedroza.calculaprazoestado.model;
 
 import java.time.LocalDate;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Feriado {
 	private String description;
 	private LocalDate date;
-	
-	public Feriado(String description, LocalDate date) {	
+
+	public Feriado() {
+
+	}
+
+	public Feriado(String description, LocalDate date) {
 		this.description = description;
 		this.date = date;
 	}
@@ -31,8 +38,5 @@ public class Feriado {
 	public String toString() {
 		return "Feriado [description=" + description + ", date=" + date + "]";
 	}
-	
-	
-	
 
 }

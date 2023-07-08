@@ -5,10 +5,17 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Suspensao {
 	private String description;
 	private LocalDate initialDate;
 	private LocalDate finalDate;
+
+	public Suspensao() {
+
+	}
 
 	public Suspensao(String description, LocalDate initialDate, LocalDate finalDate) {
 		super();
@@ -40,13 +47,13 @@ public class Suspensao {
 	public void setFinalDate(LocalDate finalDate) {
 		this.finalDate = finalDate;
 	}
-	
+
 	public List<LocalDate> getPeriodoSuspensao() {
 		List<LocalDate> dates = new ArrayList<>();
 		LocalDate date = this.initialDate;
 		while (date.isBefore(this.finalDate)) {
 			dates.add(date);
-			date = date.plusDays(1);			
+			date = date.plusDays(1);
 		}
 		return dates;
 	}

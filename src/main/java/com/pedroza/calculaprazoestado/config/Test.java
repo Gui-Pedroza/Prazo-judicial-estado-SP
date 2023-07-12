@@ -16,7 +16,7 @@ public class Test implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		
-		System.out.println(feriadoRepository.getFeriados("2023", "Ribeirão Preto"));
+		System.out.println(feriadoRepository.getFeriados("2022", "Lins"));
 	}
 
 }

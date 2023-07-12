@@ -48,8 +48,8 @@ public class PrazoService {
 		this.ano = ano;
 	}
 
-	FeriadoRepository feriadoRepository = new FeriadoRepository(new HttpClient());
-	SuspensaoRepository suspensaoRepository = new SuspensaoRepository(new HttpClient());
+	FeriadoRepository feriadoRepository = new FeriadoRepository(new HttpClient()); // TODO tentar injetar essa porra
+	SuspensaoRepository suspensaoRepository = new SuspensaoRepository(new HttpClient()); // ao invees de instanciar
 
 	List<Feriado> feriados = feriadoRepository.getFeriados(ano, municipio);
 	List<Suspensao> suspensoes = suspensaoRepository.getSuspensoes(ano, municipio);

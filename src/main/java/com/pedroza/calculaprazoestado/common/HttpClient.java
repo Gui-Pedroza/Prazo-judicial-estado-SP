@@ -9,7 +9,11 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 @Component
-public class HttpClient {
+public class HttpClient {	
+
+	public HttpClient() {
+		
+	}
 
 	private static final OkHttpClient client = new OkHttpClient();   
     

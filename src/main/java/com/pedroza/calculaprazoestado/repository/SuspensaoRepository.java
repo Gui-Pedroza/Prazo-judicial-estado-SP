@@ -19,16 +19,14 @@ public class SuspensaoRepository {
 	private static final String BASE_URL = "https://www.tjsp.jus.br/CanaisComunicacao/Feriados/";
 	private Gson gson = new Gson();
 
-	@Autowired
-	HttpClient httpClient;
 	
+	private HttpClient httpClient;	
 	
 	public SuspensaoRepository() {
 		
 	}
 	
-	public SuspensaoRepository(HttpClient httpClient) {
-		super();
+	public SuspensaoRepository(HttpClient httpClient) {		
 		this.httpClient = httpClient;
 	}
 
@@ -39,7 +37,7 @@ public class SuspensaoRepository {
 		try {
 			response = httpClient.get(url);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return createSuspensao(response);

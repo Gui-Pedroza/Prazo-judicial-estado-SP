@@ -13,6 +13,8 @@ function sendData() {
 	fetch
 	// Recebe os dados do usuário
 	var startDate = document.getElementById("start-date").value;
+	var ano = new Date(startDate).getFullYear().toString()
+	console.log(ano)
 	var daysToAddDropdown = document.getElementById("days-to-add-dropdown");
 	var daysToAddCustom = document.getElementById("days-to-add-custom");
 	var daysToAdd = daysToAddDropdown.value;
@@ -41,5 +43,5 @@ function sendData() {
 			resultElement.textContent = resultText
 		}
 	};
-	xhr.send("startDate=" + startDate + "&daysToAdd=" + daysToAdd);
+	xhr.send("startDate=" + startDate + "&daysToAdd=" + daysToAdd + "&ano=" + ano);
 }

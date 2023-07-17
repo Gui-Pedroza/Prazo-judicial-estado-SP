@@ -13,16 +13,7 @@ import com.pedroza.calculaprazoestado.model.Suspensao;
 @Component
 public class FeriadoESuspensaoMerger {
 
-    /*public static ArrayList<LocalDate> merge(ArrayList<Feriado> feriados, ArrayList<Suspensao> suspensoes) {
-        final List<LocalDate> mFeriados = feriados.stream().map(feriado -> feriado.getDate()).collect(Collectors.toList());
-        final List<LocalDate> mSuspensao = suspensoes.stream().map(suspensao -> suspensao.getPeriodoSuspensao())
-                .flatMap(List::stream).collect(Collectors.toList());
-        final ArrayList<LocalDate> merged = new ArrayList<>();
-        merged.addAll(mFeriados);
-        merged.addAll(mSuspensao);
-        return merged;
-    }*/
-
+   
 	public static List<LocalDate> merge(List<Feriado> feriados, List<Suspensao> suspensoes) {
 		final List<LocalDate> mFeriados = feriados.stream().map(feriado -> feriado.getDate()).collect(Collectors.toList());
         final List<LocalDate> mSuspensao = suspensoes.stream().map(suspensao -> suspensao.getPeriodoSuspensao())

@@ -13,8 +13,7 @@ function sendData() {
 	fetch
 	// Recebe os dados do usuário
 	var startDate = document.getElementById("start-date").value;
-	var ano = new Date(startDate).getFullYear().toString()
-	console.log(ano)
+	var ano = new Date(startDate).getFullYear().toString()	
 	var daysToAddDropdown = document.getElementById("days-to-add-dropdown");
 	var daysToAddCustom = document.getElementById("days-to-add-custom");
 	var daysToAdd = daysToAddDropdown.value;
@@ -40,7 +39,8 @@ function sendData() {
 			var resultElement = document.getElementById("result");
 			var resultText = "O seu prazo final é: " + new Date(xhr.responseText)
 				.toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" });
-			resultElement.textContent = resultText
+			resultElement.innerHTML= resultText
+			console.log(xhr.responseText)
 		}
 	};
 	xhr.send("startDate=" + startDate + "&daysToAdd=" + daysToAdd + "&ano=" + ano);

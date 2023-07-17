@@ -27,9 +27,8 @@ public class FeriadoRepository {
 
 	public FeriadoRepository() {
 		
-	}
-	
-
+	}	
+		
 	public FeriadoRepository(HttpClient httpClient) {		
 		this.httpClient = httpClient;
 	}
@@ -39,8 +38,7 @@ public class FeriadoRepository {
 		String response = null;
 		try {
 			response = httpClient.get(url);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (IOException e) {			
 			e.printStackTrace();
 		}
 		return createFeriadoResponse(response);

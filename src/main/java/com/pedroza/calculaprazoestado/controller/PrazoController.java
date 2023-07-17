@@ -17,8 +17,7 @@ import com.pedroza.calculaprazoestado.service.PrazoService;
 public class PrazoController {
 	
 	@Autowired
-	PrazoService prazoService;
-		
+	PrazoService prazoService;		
 	
 	@PostMapping("/{city}")
 	public ResponseEntity<LocalDate> calculate(

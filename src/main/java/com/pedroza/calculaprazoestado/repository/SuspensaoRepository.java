@@ -1,9 +1,12 @@
 package com.pedroza.calculaprazoestado.repository;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +22,20 @@ public class SuspensaoRepository {
 	private static final String BASE_URL = "https://www.tjsp.jus.br/CanaisComunicacao/Feriados/";
 	private Gson gson = new Gson();
 
-	
-	private HttpClient httpClient;	
+	@Autowired
+	HttpClient httpClient;	
 	
 	public SuspensaoRepository() {
 		
 	}
+	
 	
 	public SuspensaoRepository(HttpClient httpClient) {		
 		this.httpClient = httpClient;
 	}
 
 
-	public ArrayList<Suspensao> getSuspensoes(String ano, String municipio) {
+	public List<Suspensao> getSuspensoes(String ano, String municipio) {
 		final String url = BASE_URL + "PesquisarSuspensoes?nomeMunicipio=" + municipio + "&ano=" + ano;
 		String response = null;
 		try {
@@ -43,7 +47,7 @@ public class SuspensaoRepository {
 		return createSuspensao(response);
 	}
 
-	private ArrayList<Suspensao> createSuspensao(String json) {
+	private List<Suspensao> createSuspensao(String json) {
 		Map map = gson.fromJson(json, Map.class);
 		ArrayList<Map> suspensoes = (ArrayList<Map>) map.get("data");
 		ArrayList<Suspensao> suspensaoList = new ArrayList<Suspensao>();
@@ -60,8 +64,8 @@ public class SuspensaoRepository {
 	}
 
 	private LocalDate parseDate(String date) {
-		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		return LocalDate.parse(date, inputFormatter);
+		Long timeStamp = Long.parseLong(date.replaceAll("\\D", ""));
+		return Instant.ofEpochMilli(timeStamp).atZone(ZoneId.systemDefault()).toLocalDate();		
 	}
 
 }

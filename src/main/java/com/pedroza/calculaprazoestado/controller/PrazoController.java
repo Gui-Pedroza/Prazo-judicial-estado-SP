@@ -20,16 +20,14 @@ public class PrazoController {
 	PrazoService prazoService;		
 	
 	@PostMapping("/{city}")
-	public ResponseEntity<LocalDate> calculate(
+	public ResponseEntity<String> calculate(
 			@RequestParam("ano") String ano,
 			@RequestParam("startDate") LocalDate startDate,
 			@RequestParam("daysToAdd") int daysToAdd, 
 			@PathVariable("city") String city
-			) {
-		prazoService.setAno(ano);
-		prazoService.setMunicipio(city);		
-		LocalDate newDate = prazoService.addBusinessDays(startDate, daysToAdd);
-		return new ResponseEntity<LocalDate>(newDate, HttpStatus.OK);
+			) {		
+		LocalDate newDate = prazoService.addBusinessDays(startDate, daysToAdd, city);
+		return new ResponseEntity<String>(newDate.toString(), HttpStatus.OK);
 	}
 
 }

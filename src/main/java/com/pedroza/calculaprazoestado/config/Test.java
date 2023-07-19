@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Profile;
 
 import com.pedroza.calculaprazoestado.common.FeriadoESuspensaoMerger;
 import com.pedroza.calculaprazoestado.model.Feriado;
+import com.pedroza.calculaprazoestado.model.Suspensao;
 import com.pedroza.calculaprazoestado.repository.FeriadoRepository;
 import com.pedroza.calculaprazoestado.repository.SuspensaoRepository;
 import com.pedroza.calculaprazoestado.service.PrazoService;
@@ -40,16 +41,12 @@ public class Test implements CommandLineRunner {
 				.map(d -> d.getDate())
 				.collect(Collectors.toList());
 		
-		List<LocalDate> datasIniciais = suspensaoRepository.getSuspensoes("2020", "Lins")
-				.stream()
-				.map(d -> d.getInitialDate())
-				.collect(Collectors.toList());
+		List<Suspensao> datasIniciais = suspensaoRepository.getSuspensoes("2020", "Lins");
 		
-		List<Feriado> feriados = feriadoRepository.getFeriados("2021", "Bauru");
+		List<Feriado> feriados = feriadoRepository.getFeriados("2023", "Ribeirão Preto");
 		
-		// System.out.println(datasIniciais);
-		// System.out.println(holydaysList);
-		System.out.println(feriadosESuspensoes);
+		System.out.println();
+		
 	}
 
 }

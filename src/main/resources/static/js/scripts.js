@@ -43,5 +43,5 @@ function sendData() {
 			console.log(xhr.responseText)
 		}
 	};
-	xhr.send("startDate=" + startDate + "&daysToAdd=" + daysToAdd + "&ano=" + ano);
+	xhr.send("startDate=" + startDate + "&daysToAdd=" + daysToAdd);
 }

@@ -14,60 +14,34 @@ import com.pedroza.calculaprazoestado.repository.SuspensaoRepository;
 
 @Service
 public class PrazoService {
-
-	
-	private String ano;
-	private String municipio;
 		
+			
 	@Autowired
 	FeriadoRepository feriadoRepository;
 	
 	@Autowired
-    SuspensaoRepository suspensaoRepository;
+    SuspensaoRepository suspensaoRepository;	
 	
-    List<LocalDate> feriadosESuspensoes;
-    
-		
+			
 	public PrazoService() {
 		
 	}	
 			
-	public PrazoService(String ano, String municipio, FeriadoRepository feriadoRepository,
-			SuspensaoRepository suspensaoRepository, List<LocalDate> feriadosESuspensoes) {
-		super();
-		this.ano = ano;
-		this.municipio = municipio;
-		this.feriadoRepository = feriadoRepository;
-		this.suspensaoRepository = suspensaoRepository;
-		this.feriadosESuspensoes = loadFeriadosESuspensoes(ano, municipio);;
-	}
+	public PrazoService(FeriadoRepository feriadoRepository, SuspensaoRepository suspensaoRepository) {
+        this.feriadoRepository = feriadoRepository;
+        this.suspensaoRepository = suspensaoRepository;        
+    }
+    
+       
+    	
+	public LocalDate addBusinessDays(LocalDate startDate, int days, String municipio) {
+		String ano = String.valueOf(startDate.getYear());
+		List<LocalDate> feriadosESuspensoes = getMergedFeriadosESuspensoes(ano, municipio);
+		Predicate<LocalDate> isWeekend = date -> date.getDayOfWeek() == DayOfWeek.SATURDAY
+				|| date.getDayOfWeek() == DayOfWeek.SUNDAY;
 
-	public String getAno() {
-		return ano;
-	}
-
-	public void setAno(String ano) {
-		this.ano = ano;
-	}
-
-	public String getMunicipio() {
-		return municipio;
-	}
-
-	public void setMunicipio(String municipio) {
-		this.municipio = municipio;
-	}
-
-
-	private Predicate<LocalDate> isWeekend = date -> date.getDayOfWeek() == DayOfWeek.SATURDAY
-			|| date.getDayOfWeek() == DayOfWeek.SUNDAY;
-
-	private Predicate<LocalDate> isHoliday = date -> feriadosESuspensoes.contains(date);
-
-	
-	public LocalDate addBusinessDays(LocalDate startDate, int days) {
-
-		LocalDate result = diaUtilSubsequente(startDate);
+		Predicate<LocalDate> isHoliday = date -> feriadosESuspensoes.contains(date);
+		LocalDate result = diaUtilSubsequente(startDate, isWeekend, isHoliday);
 		while (days > 0) {
 			result = result.plusDays(1);
 			if (isHoliday.or(isWeekend).negate().test(result)) {
@@ -78,7 +52,7 @@ public class PrazoService {
 		return result;
 	}
 
-	public LocalDate diaUtilSubsequente(LocalDate startDate) {
+	public LocalDate diaUtilSubsequente(LocalDate startDate, Predicate<LocalDate> isWeekend, Predicate<LocalDate> isHoliday) {
 		LocalDate proximoDia = startDate;
 		while (isHoliday.or(isWeekend).test(proximoDia)) {
 			proximoDia = proximoDia.plusDays(1);
@@ -86,9 +60,11 @@ public class PrazoService {
 		return proximoDia;
 	}
 	
-	public List<LocalDate> loadFeriadosESuspensoes (String ano, String municipio) {
-		return FeriadoESuspensaoMerger
-		.merge(feriadoRepository.getFeriados(ano, municipio), suspensaoRepository.getSuspensoes(ano, municipio));
-	}
-
+	private List<LocalDate> getMergedFeriadosESuspensoes(String ano, String municipio) {
+        return FeriadoESuspensaoMerger.merge(
+            feriadoRepository.getFeriados(ano, municipio),
+            suspensaoRepository.getSuspensoes(ano, municipio)
+        );
+    }
+	
 }

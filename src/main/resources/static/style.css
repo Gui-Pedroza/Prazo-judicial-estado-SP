@@ -5,16 +5,16 @@
 }
 
 h1 {
-	margin-top: 15px;
+	margin: 0px;
 	font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 	font-size: 50px;
 	text-align: center;
 }
 
 h2 {
-	margin-left: 10px;
+	text-indent: 25px;
 	color: #f1f0ea;
-	margin-bottom: 0px;
+	margin: 0px;
 }
 
 .informacoes {

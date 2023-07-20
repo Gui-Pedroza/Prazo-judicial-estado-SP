@@ -47,6 +47,13 @@ public class Suspensao {
 	public void setFinalDate(LocalDate finalDate) {
 		this.finalDate = finalDate;
 	}
+		
+
+	@Override
+	public String toString() {
+		return "Suspensao [description=" + description + ", initialDate=" + initialDate + ", finalDate=" + finalDate
+				+ "]";
+	}
 
 	public List<LocalDate> getPeriodoSuspensao() {
 		List<LocalDate> dates = new ArrayList<>();

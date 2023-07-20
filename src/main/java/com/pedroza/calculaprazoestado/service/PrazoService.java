@@ -47,8 +47,7 @@ public class PrazoService {
 			if (isHoliday.or(isWeekend).negate().test(result)) {
 				days--;
 			}
-		}
-		System.out.println(feriadosESuspensoes); // SAÍDA DE TESTE
+		}		
 		return result;
 	}
 
@@ -60,7 +59,7 @@ public class PrazoService {
 		return proximoDia;
 	}
 	
-	private List<LocalDate> getMergedFeriadosESuspensoes(String ano, String municipio) {
+	private List<LocalDate> getMergedFeriadosESuspensoes(String ano, String municipio) { // TODO : fazer SET?
         return FeriadoESuspensaoMerger.merge(
             feriadoRepository.getFeriados(ano, municipio),
             suspensaoRepository.getSuspensoes(ano, municipio)

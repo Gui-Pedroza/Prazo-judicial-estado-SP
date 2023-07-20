@@ -13,7 +13,6 @@ function sendData() {
 	fetch
 	// Recebe os dados do usuário
 	var startDate = document.getElementById("start-date").value;
-	var ano = new Date(startDate).getFullYear().toString()	
 	var daysToAddDropdown = document.getElementById("days-to-add-dropdown");
 	var daysToAddCustom = document.getElementById("days-to-add-custom");
 	var daysToAdd = daysToAddDropdown.value;
@@ -37,9 +36,11 @@ function sendData() {
 		if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
 			// Atualiza a pagina com o resultado
 			var resultElement = document.getElementById("result");
-			var resultText = "O seu prazo final é: " + new Date(xhr.responseText)
+			var backEndDate = new Date(xhr.responseText)
+			backEndDate.setUTCHours(12)
+			var resultText = "Prazo final: " + backEndDate
 				.toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" });
-			resultElement.innerHTML= resultText
+			resultElement.innerHTML = resultText
 			console.log(xhr.responseText)
 		}
 	};

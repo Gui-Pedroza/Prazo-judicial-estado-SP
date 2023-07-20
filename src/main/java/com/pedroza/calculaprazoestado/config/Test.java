@@ -41,11 +41,11 @@ public class Test implements CommandLineRunner {
 				.map(d -> d.getDate())
 				.collect(Collectors.toList());
 		
-		List<Suspensao> datasIniciais = suspensaoRepository.getSuspensoes("2020", "Lins");
+		List<Suspensao> datas = suspensaoRepository.getSuspensoes("2020", "Lins");
 		
 		List<Feriado> feriados = feriadoRepository.getFeriados("2023", "Ribeirão Preto");
 		
-		System.out.println();
+		System.out.println(datas);
 		
 	}
 

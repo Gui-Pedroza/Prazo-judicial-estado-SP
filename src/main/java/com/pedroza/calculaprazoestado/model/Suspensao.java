@@ -58,7 +58,7 @@ public class Suspensao {
 	public List<LocalDate> getPeriodoSuspensao() {
 		List<LocalDate> dates = new ArrayList<>();
 		LocalDate date = this.initialDate;
-		while (date.isBefore(this.finalDate)) {
+		while (date.isBefore(this.finalDate) || date.equals(finalDate)) {
 			dates.add(date);
 			date = date.plusDays(1);
 		}

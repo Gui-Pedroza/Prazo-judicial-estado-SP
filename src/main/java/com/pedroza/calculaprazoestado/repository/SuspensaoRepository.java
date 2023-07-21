@@ -58,8 +58,7 @@ public class SuspensaoRepository {
 			LocalDate dataInicial = parseDate(feriadoObj.get("DataInicial").toString());
 			LocalDate dataFinal = parseDate(feriadoObj.get("DataFinal").toString());
 			suspensaoList.add(new Suspensao(descricao, dataInicial, dataFinal));
-		}
-
+		}		
 		return suspensaoList;
 	}
 

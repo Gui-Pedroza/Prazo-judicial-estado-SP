@@ -26,7 +26,7 @@ public class Test implements CommandLineRunner {
 	SuspensaoRepository suspensaoRepository;
 	
 	@Autowired
-	PrazoService prazoService;
+	PrazoService prazoService;	
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -45,7 +45,7 @@ public class Test implements CommandLineRunner {
 		
 		List<Feriado> feriados = feriadoRepository.getFeriados("2023", "Ribeirão Preto");
 		
-		System.out.println(datas);
+				
 		
 	}
 

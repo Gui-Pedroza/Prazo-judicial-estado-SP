@@ -21,6 +21,8 @@ public class FeriadoESuspensaoMerger {
         final ArrayList<LocalDate> merged = new ArrayList<>();
         merged.addAll(mFeriados);
         merged.addAll(mSuspensao);
+        System.out.println(mFeriados);
+        System.out.println(mSuspensao);
         return merged;
 	}
 }

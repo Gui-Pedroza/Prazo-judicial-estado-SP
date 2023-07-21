@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pedroza.calculaprazoestado.common.FeriadoESuspensaoMerger;
+import com.pedroza.calculaprazoestado.model.Suspensao;
 import com.pedroza.calculaprazoestado.repository.FeriadoRepository;
 import com.pedroza.calculaprazoestado.repository.SuspensaoRepository;
 
@@ -31,8 +32,7 @@ public class PrazoService {
         this.feriadoRepository = feriadoRepository;
         this.suspensaoRepository = suspensaoRepository;        
     }
-    
-       
+           
     	
 	public LocalDate addBusinessDays(LocalDate startDate, int days, String municipio) {
 		String ano = String.valueOf(startDate.getYear());

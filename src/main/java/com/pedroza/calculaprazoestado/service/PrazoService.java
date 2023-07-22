@@ -2,14 +2,13 @@ package com.pedroza.calculaprazoestado.service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pedroza.calculaprazoestado.common.FeriadoESuspensaoMerger;
-import com.pedroza.calculaprazoestado.model.Suspensao;
 import com.pedroza.calculaprazoestado.repository.FeriadoRepository;
 import com.pedroza.calculaprazoestado.repository.SuspensaoRepository;
 
@@ -36,7 +35,7 @@ public class PrazoService {
     	
 	public LocalDate addBusinessDays(LocalDate startDate, int days, String municipio) {
 		String ano = String.valueOf(startDate.getYear());
-		List<LocalDate> feriadosESuspensoes = getMergedFeriadosESuspensoes(ano, municipio);
+		Set<LocalDate> feriadosESuspensoes = getMergedFeriadosESuspensoes(ano, municipio);
 		Predicate<LocalDate> isWeekend = date -> date.getDayOfWeek() == DayOfWeek.SATURDAY
 				|| date.getDayOfWeek() == DayOfWeek.SUNDAY;
 
@@ -59,7 +58,7 @@ public class PrazoService {
 		return proximoDia;
 	}
 	
-	private List<LocalDate> getMergedFeriadosESuspensoes(String ano, String municipio) { // TODO : fazer SET?
+	private Set<LocalDate> getMergedFeriadosESuspensoes(String ano, String municipio) {
         return FeriadoESuspensaoMerger.merge(
             feriadoRepository.getFeriados(ano, municipio),
             suspensaoRepository.getSuspensoes(ano, municipio)

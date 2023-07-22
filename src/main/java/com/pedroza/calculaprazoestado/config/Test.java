@@ -1,6 +1,7 @@
 package com.pedroza.calculaprazoestado.config;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class Test implements CommandLineRunner {
 		
 		
 		
-		List<LocalDate> feriadosESuspensoes = FeriadoESuspensaoMerger
+		Set<LocalDate> feriadosESuspensoes = FeriadoESuspensaoMerger
 				.merge(feriadoRepository.getFeriados("2021", "Bauru"), suspensaoRepository.getSuspensoes("2021", "Bauru"));
 		
 		List<LocalDate> holydaysList = feriadoRepository.getFeriados("2021", "Bauru")

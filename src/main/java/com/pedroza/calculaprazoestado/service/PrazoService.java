@@ -43,22 +43,21 @@ public class PrazoService {
 	private boolean isHoliday(LocalDate date, Set<LocalDate> feriadosESuspensoes) {
 		return feriadosESuspensoes.contains(date);
 	}
+	
+	
            
     	
 	public PrazoResponseDTO addBusinessDays(LocalDate startDate, int days, String municipio) {
 		String ano = String.valueOf(startDate.getYear());
 		PrazoResponseDTO prazoDTO = new PrazoResponseDTO();
 		Set<LocalDate> feriadosESuspensoes = getMergedFeriadosESuspensoes(ano, municipio);		
-		
-		boolean isStartDateWeekend = isWeekend(startDate);
-		boolean isStartDateHoliday = isHoliday(startDate, feriadosESuspensoes);
-		
-		LocalDate result = diaUtilSubsequente(startDate, isStartDateWeekend, isStartDateHoliday, feriadosESuspensoes);
+				
+		LocalDate result = diaUtilSubsequente(startDate, feriadosESuspensoes);
 		while (days > 0) {
+			result = result.plusDays(1);
 			boolean isWeekend = isWeekend(result);
 			boolean isHoliday = isHoliday(result, feriadosESuspensoes);
-			result = result.plusDays(1);
-			if (isHoliday || isWeekend) {
+			if (!(isHoliday || isWeekend)) {
 				days--;
 			}
 		}
@@ -68,7 +67,7 @@ public class PrazoService {
 		return prazoDTO;
 	}
 
-	public LocalDate diaUtilSubsequente(LocalDate startDate, boolean isWeekend, boolean isHoliday, Set<LocalDate> feriadosESuspensoes) {
+	public LocalDate diaUtilSubsequente(LocalDate startDate, Set<LocalDate> feriadosESuspensoes) {
 		LocalDate proximoDia = startDate;
 		while (isHoliday(proximoDia, feriadosESuspensoes) || isWeekend(proximoDia)) {
 			proximoDia = proximoDia.plusDays(1);
@@ -94,16 +93,15 @@ public class PrazoService {
 		List<Feriado> feriados = feriadoRepository.getFeriados(ano, municipio);
 		List<String> descricoes = new ArrayList<>();
 		LocalDate dia = diaInicial;
-		while (dia.isBefore(diaFinal)) {
-			
+		while (dia.isBefore(diaFinal)) {			
 			for (int i = 0; i < feriados.size(); i++) {
 				if (feriados.get(i).getDate().equals(dia)) {
-					descricoes.add(feriados.get(i).getDescription());
+					descricoes.add(feriados.get(i).getDate().toString()
+							+ " - " +feriados.get(i).getDescription());
 				}
 			}
 			dia = dia.plusDays(1);
-		}
-		
+		}		
 		return descricoes;
 	}
 	

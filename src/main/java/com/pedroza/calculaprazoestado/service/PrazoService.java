@@ -2,6 +2,7 @@ package com.pedroza.calculaprazoestado.service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.pedroza.calculaprazoestado.common.FeriadoESuspensaoMerger;
 import com.pedroza.calculaprazoestado.model.Feriado;
+import com.pedroza.calculaprazoestado.model.Suspensao;
 import com.pedroza.calculaprazoestado.model.dto.PrazoResponseDTO;
 import com.pedroza.calculaprazoestado.repository.FeriadoRepository;
 import com.pedroza.calculaprazoestado.repository.SuspensaoRepository;
@@ -43,9 +45,7 @@ public class PrazoService {
 	private boolean isHoliday(LocalDate date, Set<LocalDate> feriadosESuspensoes) {
 		return feriadosESuspensoes.contains(date);
 	}
-	
-	
-           
+	           
     	
 	public PrazoResponseDTO addBusinessDays(LocalDate startDate, int days, String municipio) {
 		String ano = String.valueOf(startDate.getYear());
@@ -61,7 +61,7 @@ public class PrazoService {
 				days--;
 			}
 		}
-		List<String> descricao = getFeriadoDescricao(startDate, result, ano, municipio);
+		List<String> descricao = getDescricoes(startDate, result, ano, municipio);
 		prazoDTO.setPrazoFinal(result);
 		prazoDTO.setDescricao(descricao);
 		return prazoDTO;
@@ -83,26 +83,47 @@ public class PrazoService {
     }
 	
 	
-	// testar saporra: 
-	private List<String> getFeriadoDescricao(
+	// captura a descrição dos feriados dentro do período pesquisado
+	private List<String> getDescricoes(
 			LocalDate diaInicial, 
 			LocalDate diaFinal, 
 			String ano, 
 			String municipio
 			) {
+		DateTimeFormatter formatoBR = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		List<Feriado> feriados = feriadoRepository.getFeriados(ano, municipio);
-		List<String> descricoes = new ArrayList<>();
+		List<Suspensao> suspensoes = suspensaoRepository.getSuspensoes(ano, municipio);
+		
+		List<String> feriadoDescricoes = new ArrayList<>();
+		List<String> suspensaoDescricoes = new ArrayList<>();
+		
+		List<String> descricoesFeriadoESuspensao = new ArrayList<>();
 		LocalDate dia = diaInicial;
-		while (dia.isBefore(diaFinal)) {			
+		while (dia.isBefore(diaFinal)) {
+			// captura descricoes de feriados:
 			for (int i = 0; i < feriados.size(); i++) {
-				if (feriados.get(i).getDate().equals(dia)) {
-					descricoes.add(feriados.get(i).getDate().toString()
-							+ " - " +feriados.get(i).getDescription());
+				if (feriados.get(i).getDate().equals(dia) && !isWeekend(feriados.get(i).getDate())) {					
+					feriadoDescricoes.add(feriados.get(i).getDate().format(formatoBR)
+							+ " - " + feriados.get(i).getDescription());
+				}
+			}
+			// captura descricoes de suspensoes
+			for (int i = 0; i < suspensoes.size(); i++) {
+				if (suspensoes.get(i).getInitialDate().equals(dia) 
+						&& suspensoes.get(i).getInitialDate().equals(suspensoes.get(i).getFinalDate())) {
+					suspensaoDescricoes.add(suspensoes.get(i).getInitialDate().format(formatoBR)
+					+ " - " + suspensoes.get(i).getDescription());
+				} else if (suspensoes.get(i).getInitialDate().equals(dia)) {
+					suspensaoDescricoes.add(suspensoes.get(i).getInitialDate().format(formatoBR)
+							+ " a " + suspensoes.get(i).getFinalDate().format(formatoBR)
+							+ " - " + suspensoes.get(i).getDescription());
 				}
 			}
 			dia = dia.plusDays(1);
-		}		
-		return descricoes;
-	}
+		}
+		descricoesFeriadoESuspensao.addAll(feriadoDescricoes);
+		descricoesFeriadoESuspensao.addAll(suspensaoDescricoes);		
+		return descricoesFeriadoESuspensao;
+	}		
 	
 }

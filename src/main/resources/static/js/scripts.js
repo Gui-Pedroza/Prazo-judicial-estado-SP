@@ -299,8 +299,9 @@ function sendData() {
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
 			// Atualiza a pagina com o resultado
-			var resultElement = document.getElementById("result")
-			var resultDescricaoList = document.getElementById("descricao-list")
+			var resultElement = document.getElementById("result")			
+			var resultDescricaoList = document.getElementById("descricao-list")									
+			var paragrafo = document.getElementById("descricoes-no-periodo-paragrafo")									
 			var backEndStringDate = JSON.parse(xhr.responseText).prazoFinal
 			var descricaoList = Array.from(JSON.parse(xhr.responseText).descricao)
 			showPrazoFinal(backEndStringDate)

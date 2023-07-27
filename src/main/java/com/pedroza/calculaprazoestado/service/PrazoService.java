@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pedroza.calculaprazoestado.common.FeriadoESuspensaoMerger;
+import com.pedroza.calculaprazoestado.common.util.DataFormatter;
 import com.pedroza.calculaprazoestado.model.Feriado;
 import com.pedroza.calculaprazoestado.model.Suspensao;
 import com.pedroza.calculaprazoestado.model.dto.PrazoResponseDTO;
@@ -62,7 +63,7 @@ public class PrazoService {
 			}
 		}
 		List<String> descricao = getDescricoes(startDate, result, ano, municipio);
-		prazoDTO.setPrazoFinal(result);
+		prazoDTO.setPrazoFinal(DataFormatter.formatoBRextenso(result));
 		prazoDTO.setDescricao(descricao);
 		return prazoDTO;
 	}
@@ -90,7 +91,7 @@ public class PrazoService {
 			String ano, 
 			String municipio
 			) {
-		DateTimeFormatter formatoBR = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		
 		List<Feriado> feriados = feriadoRepository.getFeriados(ano, municipio);
 		List<Suspensao> suspensoes = suspensaoRepository.getSuspensoes(ano, municipio);
 		
@@ -103,7 +104,7 @@ public class PrazoService {
 			// captura descricoes de feriados:
 			for (int i = 0; i < feriados.size(); i++) {
 				if (feriados.get(i).getDate().equals(dia) && !isWeekend(feriados.get(i).getDate())) {					
-					feriadoDescricoes.add(feriados.get(i).getDate().format(formatoBR)
+					feriadoDescricoes.add(DataFormatter.formatoBR(feriados.get(i).getDate())
 							+ " - " + feriados.get(i).getDescription());
 				}
 			}
@@ -111,11 +112,11 @@ public class PrazoService {
 			for (int i = 0; i < suspensoes.size(); i++) {
 				if (suspensoes.get(i).getInitialDate().equals(dia) 
 						&& suspensoes.get(i).getInitialDate().equals(suspensoes.get(i).getFinalDate())) {
-					suspensaoDescricoes.add(suspensoes.get(i).getInitialDate().format(formatoBR)
+					suspensaoDescricoes.add(DataFormatter.formatoBR(suspensoes.get(i).getInitialDate())
 					+ " - " + suspensoes.get(i).getDescription());
 				} else if (suspensoes.get(i).getInitialDate().equals(dia)) {
-					suspensaoDescricoes.add(suspensoes.get(i).getInitialDate().format(formatoBR)
-							+ " a " + suspensoes.get(i).getFinalDate().format(formatoBR)
+					suspensaoDescricoes.add(DataFormatter.formatoBR(suspensoes.get(i).getInitialDate())
+							+ " a " + DataFormatter.formatoBR(suspensoes.get(i).getFinalDate())
 							+ " - " + suspensoes.get(i).getDescription());
 				}
 			}

@@ -1,11 +1,10 @@
 package com.pedroza.calculaprazoestado.model.dto;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public class PrazoResponseDTO {
 	
-	private LocalDate prazoFinal;
+	private String prazoFinal;
 	private List<String> descricao;
 	
 	
@@ -14,16 +13,16 @@ public class PrazoResponseDTO {
 		
 	}
 
-	public PrazoResponseDTO(LocalDate prazoFinal, List<String> descricao) {
+	public PrazoResponseDTO(String prazoFinal, List<String> descricao) {
 		this.prazoFinal = prazoFinal;
 		this.descricao = descricao;
 	}
 
-	public LocalDate getPrazoFinal() {
+	public String getPrazoFinal() {
 		return prazoFinal;
 	}
 
-	public void setPrazoFinal(LocalDate prazoFinal) {
+	public void setPrazoFinal(String prazoFinal) {
 		this.prazoFinal = prazoFinal;
 	}
 

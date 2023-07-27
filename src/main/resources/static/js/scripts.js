@@ -1,12 +1,12 @@
 function showDaysToAddInput() {
-	var dropdown = document.getElementById("days-to-add-dropdown");
-	var selectedValue = dropdown.options[dropdown.selectedIndex].value;
-	var outroQuantidade = document.getElementById("outro-quantidade");
+	var dropdown = document.getElementById("days-to-add-dropdown")
+	var selectedValue = dropdown.options[dropdown.selectedIndex].value
+	var outroQuantidade = document.getElementById("outro-quantidade")
 
 	if (selectedValue === "outro") {
-		outroQuantidade.style.display = "block";
+		outroQuantidade.style.display = "block"
 	} else {
-		outroQuantidade.style.display = "none";
+		outroQuantidade.style.display = "none"
 	}
 }
 
@@ -272,7 +272,7 @@ function loadMunicipios() {
 		"Viradouro",
 		"Votuporanga",
 		"Várzea Paulista"
-	]	
+	]
 	for (cidade of cidades) {
 		const option = document.createElement("option")
 		option.text = cidade
@@ -280,38 +280,84 @@ function loadMunicipios() {
 	}
 }
 
-function sendData() {
-	fetch
-	// Recebe os dados do usuário
-	var startDate = document.getElementById("start-date").value;
-	var daysToAddDropdown = document.getElementById("days-to-add-dropdown");
-	var daysToAddCustom = document.getElementById("days-to-add-custom");
-	var daysToAdd = daysToAddDropdown.value;
-	var city = document.getElementById("city").value;
-	if (daysToAdd === "outro") {
-		daysToAdd = daysToAddCustom.value;
-	}
+var diasParaAdicionar = 0
 
+function sendData() {
+	// Recebe os dados do usuário
+	var startDate = document.getElementById("start-date").value
+	var daysToAdd = diasParaAdicionar
+	var city = document.getElementById("city").value
 	if (city === "") {
-		alert("Por favor, selecione uma cidade.");
+		alert("Por favor, selecione uma cidade.")
 		return;
 	}
 
 	// Envia os dados usando AJAX
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", "/" + city, true);
-	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
 			// Atualiza a pagina com o resultado
-			var resultElement = document.getElementById("result");
-			var backEndDate = new Date(xhr.responseText)
-			backEndDate.setUTCHours(12)
-			var resultText = "Prazo final: " + backEndDate
-				.toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" });
-			resultElement.innerHTML = resultText
-			console.log(xhr.responseText)
+			var resultElement = document.getElementById("result")			
+			var resultDescricaoList = document.getElementById("descricao-list")									
+			var paragrafo = document.getElementById("descricoes-no-periodo-paragrafo")									
+			var backEndStringDate = JSON.parse(xhr.responseText).prazoFinal
+			var descricaoList = Array.from(JSON.parse(xhr.responseText).descricao)
+			showPrazoFinal(backEndStringDate)
+			showFeriaods(descricaoList)
 		}
 	};
-	xhr.send("startDate=" + startDate + "&daysToAdd=" + daysToAdd);
+	xhr.send("startDate=" + startDate + "&daysToAdd=" + daysToAdd)
+}
+
+function setDaysByRadioButton(value) {
+	var outros = document.getElementsByClassName("outro")
+	for (var outro of outros) {
+		var shouldHide = value != null
+		var hiddenClassName = "hidden"
+
+		if (shouldHide) {
+			outro.classList.toggle(hiddenClassName)
+		} else {
+			diasParaAdicionar = +value
+			outro.classList.remove(hiddenClassName)
+		}
+	}
+}
+
+function setDaysByOther() {
+	var element = document.getElementById("prazo-value")
+	diasParaAdicionar = +element.value
+}
+
+function toggleInfo() {
+	var info = document.getElementsByClassName("informacoes")[0]
+	info.classList.toggle("hidden")
+}
+
+function showPrazoFinal(prazoFinalValue) {
+	var prazoFinal = document.getElementById("prazo-final")
+	prazoFinal.classList.remove("hidden")
+
+	var prazoFinalData = document.getElementById("prazo-final-data")
+	prazoFinalData.innerHTML = prazoFinalValue
+}
+
+function showFeriaods(listaFeriados) {
+	var feriados = document.getElementById("feriados")
+	feriados.classList.remove("hidden")
+
+	for (var feriadoDescricao of listaFeriados) {
+		var feriado = document.createElement('div')
+		feriado.classList.add("feriado")
+
+		var descricao = document.createElement('div')
+		descricao.classList.add("descricao")
+		descricao.innerHTML = feriadoDescricao
+
+		feriado.appendChild(descricao)
+		feriados.appendChild(feriado)
+	}
+
 }

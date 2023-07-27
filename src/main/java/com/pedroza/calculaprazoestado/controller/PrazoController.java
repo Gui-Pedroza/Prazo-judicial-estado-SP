@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pedroza.calculaprazoestado.model.dto.PrazoResponseDTO;
 import com.pedroza.calculaprazoestado.service.PrazoService;
 
 
@@ -20,13 +21,13 @@ public class PrazoController {
 	PrazoService prazoService;		
 	
 	@PostMapping("/{city}")
-	public ResponseEntity<String> calculate(			
+	public ResponseEntity<PrazoResponseDTO> calculate(			
 			@RequestParam("startDate") LocalDate startDate,
 			@RequestParam("daysToAdd") int daysToAdd, 
 			@PathVariable("city") String city
 			) {		
-		LocalDate newDate = prazoService.addBusinessDays(startDate, daysToAdd, city);
-		return new ResponseEntity<String>(newDate.toString(), HttpStatus.OK);
+		PrazoResponseDTO resultado = prazoService.addBusinessDays(startDate, daysToAdd, city);
+		return new ResponseEntity<PrazoResponseDTO>(resultado, HttpStatus.OK);
 	}
 
 }

@@ -24,9 +24,8 @@ public class FeriadoESuspensaoMerger {
         final Set<LocalDate> merged = new HashSet<>();
         merged.addAll(mFeriados);
         merged.addAll(mSuspensao);
-        SortedSet<LocalDate> suspensoesOrdenadas = new TreeSet<>(); // SAÍDA DE TESTE C/ RESULTADOS ORDENADOS
-        suspensoesOrdenadas.addAll(merged);
-        System.out.println(suspensoesOrdenadas);
         return merged;
 	}
+	
+				
 }

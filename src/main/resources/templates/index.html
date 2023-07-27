@@ -3,81 +3,119 @@
 
 <head>
 	<link rel="stylesheet" type="text/css" href="../static/style.css">
-	<link rel="stylesheet"
-		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 	<script src="../static/js/scripts.js" th:src="@{../static/js/scripts.js}"></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Calculadora de Prazos</title>
 </head>
 
-<body onload="loadMunicipios()">
-	<h1>Calculadora de prazos processuais cíveis.</h1>
-	<h2>Digite a data de seu prazo inicial e a quantidade de dias do seu prazo</h2>
-	<div class="informacoes">
-		<p>
-			O sistema a seguir é uma ferramenta simples para mera consulta de prazos processuais cíveis no âmbito do
-			Tribunal
-			de Justiça
-			do Estado de São Paulo para auxiliar advogados, serventia e colegas de trabalho na contagem de prazos.
-			O resultado informado é calculado em dias úteis e com base na tabela de feriados e suspensão de prazos do
-			site do<a href="https://www.tjsp.jus.br/CanaisComunicacao/Feriados/ExpedienteForense" target="_blank"
-				rel="external">Tribunal de Justiça</a> de acordo com cada região.<br>
-		</p>
-		<p>
-
-			No campo "Data inicial", digite a data do início do prazo, que poderá ser a data da publicação no DJE, data
-			da juntada do Mandado ou AR, ou data da ciência do Ministério Público ou Defensoria no portal.<br>
-			Caso a data inicial coincida com feriado ou final de semana, o sistema automaticamente irá considerar o
-			próximo dia útil subsequente no cálculo.
-
-		</p>
-		<p><span class="destaque">Atenção:</span> Verifique<a
-				href="https://www.tjsp.jus.br/Indisponibilidade/Comunicados" target="_blank" rel="external">neste
-				link</a>se a data do seu prazo final se enquadra em algumas das situações de indisponibilidade de
-			sistemas, caso em que o prazo final será prorrogado para o dia útil seguinte á retomada de funcionamento do
-			serviço (<em>Artigo 3º do Provimento CG Nº 26/2013</em>).</p>
-	</div>
-
-	<div class="form-group">
-		<label for="start-date">Data inicial:</label>
-		<input type="date" id="start-date" />
-
-		<label for="city">Cidade:</label>
-		<select id="city" class="form-control" name="city">
-
-		</select>
-		<label for="days-to-add-dropdown">Dias de prazo:</label>
-		<select id="days-to-add-dropdown" class="form-control" name="days-to-add-dropdown"
-			onchange="showDaysToAddInput()">
-			<option value="5">5 dias</option>
-			<option value="15" selected>15 dias</option>
-			<option value="30">30 dias</option>
-			<option value="60">60 dias</option>
-			<option value="outro">Outro</option>
-		</select>
-		<div>
-			<div id="outro-quantidade" style="display: none;">
-				<label for="days-to-add-custom">Outra quantidade:</label>
-				<input type="number" id="days-to-add-custom" min="0" placeholder="Dias" />
-			</div>
-			<br>
-			<button onclick="sendData()"><span class="material-symbols-outlined">
-					schedule
-				</span>Calcular</button>
-			<br>
-			<button onclick="window.location.reload()"><span class="material-symbols-outlined">
-					backspace
-				</span>Limpar</button>
-			<br>
-			<div id="result"></div>
-			<ul id="descricao-list"></ul>
-			<br>
-
+<body onload="loadMunicipios()" class="center">
+	<div class="form">
+		<!-- Data Inicial -->
+		<div class="input-group">
+			<label>
+				<span>Data Inicial</span>
+				<input type="date" id="start-date">
+			</label>
 		</div>
+
+		<!-- City input -->
+		<div class="input-group">
+			<label>
+				<span>Cidade</span>
+				<select id="city"></select>
+			</label>
+		</div>
+
+		<!-- Prazos -->
+		<div class="input-group">
+			<div class="label">Prazo</div>
+			<div class="prazos">
+				<div class="prazo"><input name="dias" onchange="setDaysByRadioButton(5)" id="5dias" value="5"
+						type="radio"><label for="5dias">5 dias</label></div>
+				<div class="prazo"><input name="dias" onchange="setDaysByRadioButton(15)" id="15dias" value="15"
+						type="radio"><label for="15dias">15 dias</label></div>
+				<div class="prazo"><input name="dias" onchange="setDaysByRadioButton(30)" id="30dias" value="30"
+						type="radio"><label for="30dias">30 dias</label></div>
+				<div class="prazo"><input name="dias" onchange="setDaysByRadioButton(60)" id="60dias" value="60"
+						type="radio"><label for="60dias">60 dias</label></div>
+				<div class="prazo"><input name="dias" onchange="setDaysByRadioButton(null)" id="outro"
+						type="radio"><label for="outro">Outro</label></div>
+			</div>
+		</div>
+
+		<!-- Outro prazo -->
+		<div class="input-group outro hidden">
+			<div class="outro">
+				<label>
+					<span>Outro dia</span>
+					<input type="number" min="1" id="prazo-value" class="outro-prazo-input" onchange="setDaysByOther()"
+						placeholder="Outro dia">
+				</label>
+			</div>
+		</div>
+
+		<!-- Botão -->
+		<div class="botoes">
+			<button class="botao-limpar" onclick="window.location.reload()">Limpar</button>
+			<button class="botao-calcular" onclick="sendData()">Calcular</button>
+		</div>
+
+		<div id="prazo-final" class="prazo-final hidden">
+			<div class="label">Prazo Final</div>
+			<div id="prazo-final-data" class="prazo-final-data">20/05/2020</div>
+		</div>
+
+		<div id="feriados" class="feriados hidden">
+			<div class="label">Feriados</div>
+		</div>
+
+		<div class="center">
+			<button class="botao-info" onclick="toggleInfo()">Mostrar informações</button>
+		</div>
+
+		<div class="informacoes hidden">
+			<h1>Calculadora de prazos processuais cíveis.</h1>
+			<h2>Digite a data de seu prazo inicial e a quantidade de dias do seu prazo</h2>
+			<div class="informacoes">
+				<p>
+					O sistema a seguir é uma ferramenta simples para mera consulta de prazos processuais cíveis no
+					âmbito do
+					Tribunal
+					de Justiça
+					do Estado de São Paulo para auxiliar advogados, serventia e colegas de trabalho na contagem de
+					prazos.
+					O resultado informado é calculado em dias úteis e com base na tabela de feriados e suspensão de
+					prazos do
+					site do<a href="https://www.tjsp.jus.br/CanaisComunicacao/Feriados/ExpedienteForense"
+						target="_blank" rel="external">Tribunal de Justiça</a> de acordo com cada região.<br>
+				</p>
+				<p>
+
+					No campo "Data inicial", digite a data do início do prazo, que poderá ser a data da publicação no
+					DJE, data
+					da juntada do Mandado ou AR, ou data da ciência do Ministério Público ou Defensoria no portal.<br>
+					Caso a data inicial coincida com feriado ou final de semana, o sistema automaticamente irá
+					considerar o
+					próximo dia útil subsequente no cálculo.
+
+				</p>
+				<p><span class="destaque">Atenção:</span> Verifique <a
+						href="https://www.tjsp.jus.br/Indisponibilidade/Comunicados" target="_blank"
+						rel="external">neste link</a> se a data do seu prazo final se enquadra em algumas das situações
+					de indisponibilidade
+					de
+					sistemas, caso em que o prazo final será prorrogado para o dia útil seguinte á retomada de
+					funcionamento do
+					serviço (<em>Artigo 3º do Provimento CG Nº 26/2013</em>).</p>
+			</div>
+		</div>
+
+		<footer>
+			<div>Criado por Guilherme Pedroza</div>
+			<div>contato gpedroza@tjsp.jus.br</div>
+		</footer>
 	</div>
-	<footer>Criado por Guilherme Pedroza
-		<br>
-		contato gpedroza@tjsp.jus.br
-	</footer>
 </body>
 
 </html>

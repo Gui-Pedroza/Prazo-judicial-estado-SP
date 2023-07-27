@@ -272,7 +272,7 @@ function loadMunicipios() {
 		"Viradouro",
 		"Votuporanga",
 		"Várzea Paulista"
-	]	
+	]
 	for (cidade of cidades) {
 		const option = document.createElement("option")
 		option.text = cidade
@@ -280,18 +280,13 @@ function loadMunicipios() {
 	}
 }
 
+var diasParaAdicionar = 0
+
 function sendData() {
-	fetch
 	// Recebe os dados do usuário
 	var startDate = document.getElementById("start-date").value
-	var daysToAddDropdown = document.getElementById("days-to-add-dropdown")
-	var daysToAddCustom = document.getElementById("days-to-add-custom")
-	var daysToAdd = daysToAddDropdown.value;
+	var daysToAdd = diasParaAdicionar
 	var city = document.getElementById("city").value
-	if (daysToAdd === "outro") {
-		daysToAdd = daysToAddCustom.value
-	}
-
 	if (city === "") {
 		alert("Por favor, selecione uma cidade.")
 		return;
@@ -308,15 +303,60 @@ function sendData() {
 			var resultDescricaoList = document.getElementById("descricao-list")
 			var backEndStringDate = JSON.parse(xhr.responseText).prazoFinal
 			var descricaoList = Array.from(JSON.parse(xhr.responseText).descricao)
-			for (itens of descricaoList) {
-				var itensToShow = document.createElement("li")
-				itensToShow.innerHTML = itens
-				resultDescricaoList.appendChild(itensToShow)
-			}
-			var resultText = "Prazo final: " + backEndStringDate
-			resultElement.innerHTML = resultText
-			console.log(descricaoList)
+			showPrazoFinal(backEndStringDate)
+			showFeriaods(descricaoList)
 		}
 	};
 	xhr.send("startDate=" + startDate + "&daysToAdd=" + daysToAdd)
+}
+
+function setDaysByRadioButton(value) {
+	var outros = document.getElementsByClassName("outro")
+	for (var outro of outros) {
+		var shouldHide = value != null
+		var hiddenClassName = "hidden"
+
+		if (shouldHide) {
+			outro.classList.toggle(hiddenClassName)
+		} else {
+			diasParaAdicionar = +value
+			outro.classList.remove(hiddenClassName)
+		}
+	}
+}
+
+function setDaysByOther() {
+	var element = document.getElementById("prazo-value")
+	diasParaAdicionar = +element.value
+}
+
+function toggleInfo() {
+	var info = document.getElementsByClassName("informacoes")[0]
+	info.classList.toggle("hidden")
+}
+
+function showPrazoFinal(prazoFinalValue) {
+	var prazoFinal = document.getElementById("prazo-final")
+	prazoFinal.classList.remove("hidden")
+
+	var prazoFinalData = document.getElementById("prazo-final-data")
+	prazoFinalData.innerHTML = prazoFinalValue
+}
+
+function showFeriaods(listaFeriados) {
+	var feriados = document.getElementById("feriados")
+	feriados.classList.remove("hidden")
+
+	for (var feriadoDescricao of listaFeriados) {
+		var feriado = document.createElement('div')
+		feriado.classList.add("feriado")
+
+		var descricao = document.createElement('div')
+		descricao.classList.add("descricao")
+		descricao.innerHTML = feriadoDescricao
+
+		feriado.appendChild(descricao)
+		feriados.appendChild(feriado)
+	}
+
 }

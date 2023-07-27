@@ -1,104 +1,161 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
 * {
-	font-family: Arial, Helvetica, sans-serif;
-	padding: 8px;
-	border-radius: 10px;
+  outline: none;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+  border: none;
 }
-
-h1 {
-	margin: 0px;
-	font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-	font-size: 50px;
-	text-align: center;
-}
-
-h2 {
-	text-indent: 25px;
-	color: #f1f0ea;
-	margin: 0px;
-}
-
-.informacoes {
-	font-family: Verdana, Geneva, Tahoma, sans-serif;
-	color: #f1f0ea;
-	font-size: 16px;
-	text-align: justify;
-	text-indent: 25px;
-}
-
-a {
-	color: #f1f0ea;
-}
-
-a:hover {
-	color: darkgray;
-}
-
+html,
 body {
-	background-image: linear-gradient(to right, #2d232e, #474448, #534b52);
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  position: relative;
+  background: #fcfcfc;
+  width: 100%;
 }
 
-.form-group {
-	background-color: #d5bf86;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	width: 400px;
-	padding: 30px;
-	margin: auto;
-	text-align: justify;
-	font-size: 20px;
-	box-shadow: 5px 5px 20px black;
+.prazos {
+  display: flex;
+  flex-wrap: wrap;
 }
 
-#city, #start-date, #days-to-add-dropdown {
-	background-color: #e0ddcf;
-	font-size: 16px;
-	box-shadow: 5px 5px 10px rgb(75, 75, 75);
-	margin-bottom: 10px;
-}
-
-#outro-quantidade {
-	font-size: 20px;
-	text-align: left;
-}
-
-#days-to-add-custom {
-	background-color: #e0ddcf;
-	font-size: 16px;
-	box-shadow: 5px 5px 10px rgb(75, 75, 75);
-	width: 120px;
+.prazo span {
+  width: 30px;
+  height: 30px;
+  display: block;
 }
 
 button {
-	margin-bottom: 20px;
-	text-align: left;
-	width: 150px;
-	background-color: #c4a149;
-	font-size: 16px;
-	font-weight: bold;
-	box-shadow: 5px 5px 10px rgb(75, 75, 75);
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+  font-size: 16px;
+  width: 100%;
+  padding: 10px;
+  background: #eee;
+  border-radius: 5px;
+  transition: all 200ms linear;
+}
+
+input:active {
+  transform: scale(0.96);
+}
+
+input:focus {
+  background: #ddd;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.prazo label {
+  padding-right: 10px;
+}
+
+.form {
+  padding: 20px;
+  width: 600px;
+  max-width: 100%;
+  margin: auto;
+}
+
+label span,
+.label {
+  font-size: 12px;
+  color: #666;
+}
+
+.hidden {
+  display: none;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feriados {
+  padding: 10px 0;
+}
+
+.feriado {
+  display: flex;
+  align-items: center;
+}
+
+.feriado {
+  background: #eee;
+  margin-bottom: 10px;
+  overflow: hidden;
+  border-radius: 5px;
+}
+
+.feriado {
+  padding: 10px;
+  display: block;
+}
+
+button {
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: all 200ms linear;
+  font-weight: bold;
 }
 
 button:active {
-	transform: scale(0.98);
-	box-shadow: 3px 3px 7px rgb(75, 75, 75);
+  transform: scale(0.9);
+}
+button:hover {
+  opacity: 0.6;
 }
 
-ul#descricao-list > li {
-	font-size: 10px;
+.botao-limpar {
+  background: #dbdb53;
+  margin-right: 10px;
 }
 
-span {
-	padding: 0;
-	margin-left: 0;
-	font-size: 16px;
+.botao-calcular {
+  background: #215d99;
+  color: #fff;
+}
+
+.botao-info {
+  background: #dee;
+  color: #666;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.botoes {
+  display: flex;
+  justify-content: flex-end;
 }
 
 footer {
-	margin-top: 60px;
-	color: grey;
+  text-align: center;
 }
 
-.destaque {
-	font-weight: bold;
+.prazo-final {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 20px;
+  background: #eed;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.feriados .label {
+  margin-bottom: 10px;
 }

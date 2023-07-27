@@ -304,18 +304,20 @@ function sendData() {
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
 			// Atualiza a pagina com o resultado
-			var resultElement = document.getElementById("result")
-			var resultDescricaoList = document.getElementById("descricao-list")
+			var resultElement = document.getElementById("result")			
+			var resultDescricaoList = document.getElementById("descricao-list")									
+			var paragrafo = document.getElementById("descricoes-no-periodo-paragrafo")									
 			var backEndStringDate = JSON.parse(xhr.responseText).prazoFinal
 			var descricaoList = Array.from(JSON.parse(xhr.responseText).descricao)
+			resultDescricaoList.innerHTML = ""
+			paragrafo.innerText = "Feriados e suspensoes no período:"			
 			for (itens of descricaoList) {
 				var itensToShow = document.createElement("li")
 				itensToShow.innerHTML = itens
 				resultDescricaoList.appendChild(itensToShow)
-			}
-			var resultText = "Prazo final: " + backEndStringDate
-			resultElement.innerHTML = resultText
-			console.log(descricaoList)
+			}			
+			var resultText = "Prazo final: " + backEndStringDate			
+			resultElement.innerHTML = resultText			
 		}
 	};
 	xhr.send("startDate=" + startDate + "&daysToAdd=" + daysToAdd)

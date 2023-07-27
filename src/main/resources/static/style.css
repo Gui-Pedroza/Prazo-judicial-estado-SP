@@ -84,8 +84,8 @@ button:active {
 	box-shadow: 3px 3px 7px rgb(75, 75, 75);
 }
 
-ul#descricao-list > li {
-	font-size: 10px;
+#descricao-list > li {
+	font-size: 14px;
 }
 
 span {

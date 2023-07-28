@@ -284,7 +284,7 @@ var diasParaAdicionar = 0
 
 function sendData() {
 	// Recebe os dados do usuário
-	var startDate = document.getElementById("start-date").value
+	var startDate = document.getElementById("start-date").value	
 	var daysToAdd = diasParaAdicionar
 	var city = document.getElementById("city").value
 	if (city === "") {
@@ -305,7 +305,7 @@ function sendData() {
 			var backEndStringDate = JSON.parse(xhr.responseText).prazoFinal
 			var descricaoList = Array.from(JSON.parse(xhr.responseText).descricao)
 			showPrazoFinal(backEndStringDate)
-			showFeriaods(descricaoList)
+			showFeriados(descricaoList)
 		}
 	};
 	xhr.send("startDate=" + startDate + "&daysToAdd=" + daysToAdd)
@@ -318,7 +318,7 @@ function setDaysByRadioButton(value) {
 		var hiddenClassName = "hidden"
 
 		if (shouldHide) {
-			outro.classList.toggle(hiddenClassName)
+			outro.classList.add(hiddenClassName)
 		} else {
 			diasParaAdicionar = +value
 			outro.classList.remove(hiddenClassName)
@@ -332,6 +332,12 @@ function setDaysByOther() {
 }
 
 function toggleInfo() {
+	var infoButton = document.getElementsByClassName("botao-info")[0]
+	if (infoButton.textContent === "Mostrar informações") {
+		infoButton.textContent = "Esconder"
+	} else {
+		infoButton.textContent = "Mostrar informações"
+	}	
 	var info = document.getElementsByClassName("informacoes")[0]
 	info.classList.toggle("hidden")
 }
@@ -344,7 +350,7 @@ function showPrazoFinal(prazoFinalValue) {
 	prazoFinalData.innerHTML = prazoFinalValue
 }
 
-function showFeriaods(listaFeriados) {
+function showFeriados(listaFeriados) {
 	var feriados = document.getElementById("feriados")
 	feriados.classList.remove("hidden")
 

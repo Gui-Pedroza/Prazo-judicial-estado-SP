@@ -1,15 +1,3 @@
-function showDaysToAddInput() {
-	var dropdown = document.getElementById("days-to-add-dropdown")
-	var selectedValue = dropdown.options[dropdown.selectedIndex].value
-	var outroQuantidade = document.getElementById("outro-quantidade")
-
-	if (selectedValue === "outro") {
-		outroQuantidade.style.display = "block"
-	} else {
-		outroQuantidade.style.display = "none"
-	}
-}
-
 function loadMunicipios() {
 	const cidades = [
 		"Aguaí",
@@ -207,6 +195,7 @@ function loadMunicipios() {
 		"Praia Grande",
 		"Promissão",
 		"Queluz",
+		"Rancharia",
 		"Registro",
 		"Ribeirão Bonito",
 		"Ribeirão Pires",
@@ -284,7 +273,7 @@ var diasParaAdicionar = 0
 
 function sendData() {
 	// Recebe os dados do usuário
-	var startDate = document.getElementById("start-date").value	
+	var startDate = document.getElementById("start-date").value
 	var daysToAdd = diasParaAdicionar
 	var city = document.getElementById("city").value
 	if (city === "") {
@@ -296,12 +285,9 @@ function sendData() {
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", "/" + city, true);
 	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
-	xhr.onreadystatechange = function () {
+	xhr.onreadystatechange = function() {
 		if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-			// Atualiza a pagina com o resultado
-			var resultElement = document.getElementById("result")			
-			var resultDescricaoList = document.getElementById("descricao-list")									
-			var paragrafo = document.getElementById("descricoes-no-periodo-paragrafo")									
+			// Atualiza a pagina com o resultado			
 			var backEndStringDate = JSON.parse(xhr.responseText).prazoFinal
 			var descricaoList = Array.from(JSON.parse(xhr.responseText).descricao)
 			showPrazoFinal(backEndStringDate)
@@ -320,9 +306,9 @@ function setDaysByRadioButton(value) {
 		if (shouldHide) {
 			outro.classList.add(hiddenClassName)
 		} else {
-			diasParaAdicionar = +value
 			outro.classList.remove(hiddenClassName)
 		}
+		diasParaAdicionar = +value
 	}
 }
 
@@ -337,7 +323,7 @@ function toggleInfo() {
 		infoButton.textContent = "Esconder"
 	} else {
 		infoButton.textContent = "Mostrar informações"
-	}	
+	}
 	var info = document.getElementsByClassName("informacoes")[0]
 	info.classList.toggle("hidden")
 }
@@ -352,8 +338,10 @@ function showPrazoFinal(prazoFinalValue) {
 
 function showFeriados(listaFeriados) {
 	var feriados = document.getElementById("feriados")
-	feriados.classList.remove("hidden")
-
+	if (listaFeriados.length != 0) {
+		feriados.classList.remove("hidden")
+	}
+	feriados.innerHTML = ""	
 	for (var feriadoDescricao of listaFeriados) {
 		var feriado = document.createElement('div')
 		feriado.classList.add("feriado")

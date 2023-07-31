@@ -337,21 +337,27 @@ function showPrazoFinal(prazoFinalValue) {
 }
 
 function showFeriados(listaFeriados) {
-	var feriados = document.getElementById("feriados")
+	var feriados = document.getElementById("feriados")		
 	if (listaFeriados.length != 0) {
+		feriados.innerHTML = ""
 		feriados.classList.remove("hidden")
-	}
-	feriados.innerHTML = ""	
-	for (var feriadoDescricao of listaFeriados) {
-		var feriado = document.createElement('div')
-		feriado.classList.add("feriado")
-
-		var descricao = document.createElement('div')
-		descricao.classList.add("descricao")
-		descricao.innerHTML = feriadoDescricao
-
-		feriado.appendChild(descricao)
-		feriados.appendChild(feriado)
+		var label = document.createElement("div")
+		label.className = "label"
+		label.innerHTML = "Feriados e suspensões no período: "
+		feriados.appendChild(label)		
+		for (var feriadoDescricao of listaFeriados) {
+			var feriado = document.createElement('div')
+			feriado.classList.add("feriado")
+	
+			var descricao = document.createElement('div')
+			descricao.classList.add("descricao")
+			descricao.innerHTML = feriadoDescricao
+	
+			feriado.appendChild(descricao)
+			feriados.appendChild(feriado)
+		}	
+	} else {
+		feriados.innerHTML = ""
 	}
 
 }

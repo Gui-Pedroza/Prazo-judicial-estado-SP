@@ -60,7 +60,12 @@ public class PrazoService {
 			if (!(isHoliday || isWeekend)) {
 				days--;
 			}
+			if (result.getYear() > startDate.getYear()) {
+				String nextYear = String.valueOf(startDate.getYear() + 1);
+				feriadosESuspensoes.addAll(getMergedFeriadosESuspensoes(nextYear, municipio));
+			}
 		}
+		
 		List<String> descricao = getDescricoes(startDate, result, ano, municipio);
 		prazoDTO.setPrazoFinal(DataFormatter.formatoBRextenso(result));
 		prazoDTO.setDescricao(descricao);
@@ -101,8 +106,9 @@ public class PrazoService {
 		LocalDate dia = diaInicial;
 		while (dia.isBefore(diaFinal)) {
 			// captura descricoes de feriados:
-			for (int i = 0; i < feriados.size(); i++) {
-				if (feriados.get(i).getDate().equals(dia) && !isWeekend(feriados.get(i).getDate())) {					
+			for (int i = 0; i < feriados.size(); i++) { 
+				if (feriados.get(i).getDate().equals(dia) 
+						&& !isWeekend(feriados.get(i).getDate())) { // verifica se feriado coincide com final de semana				
 					feriadoDescricoes.add(DataFormatter.formatoBR(feriados.get(i).getDate())
 							+ " - " + feriados.get(i).getDescription());
 				}

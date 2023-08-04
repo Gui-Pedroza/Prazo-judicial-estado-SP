@@ -53,6 +53,7 @@ public class PrazoService {
 		Set<LocalDate> feriadosESuspensoes = getMergedFeriadosESuspensoes(ano, municipio);		
 				
 		LocalDate result = diaUtilSubsequente(startDate, feriadosESuspensoes);
+		int iterator = startDate.getYear();
 		while (days > 0) {
 			result = result.plusDays(1);
 			boolean isWeekend = isWeekend(result);
@@ -60,13 +61,23 @@ public class PrazoService {
 			if (!(isHoliday || isWeekend)) {
 				days--;
 			}
-			if (result.getYear() > startDate.getYear()) {
+			/* caso durante o cálculo o resultado passar para o ano seguinte,
+			 * (consultas próximas ao fim do ano por exemplo)
+			 * o loop abaixo irá iterar ao menos uma vez para garantir o carregamento dos feriados e susp do ano seguinte */
+			while (iterator < result.getYear()) {
 				String nextYear = String.valueOf(startDate.getYear() + 1);
 				feriadosESuspensoes.addAll(getMergedFeriadosESuspensoes(nextYear, municipio));
+				iterator++;
 			}
 		}
-		
-		List<String> descricao = getDescricoes(startDate, result, ano, municipio);
+		List<String> descricao = new ArrayList<>();
+		if (result.getYear() > startDate.getYear()) {
+			String nextYear = String.valueOf(startDate.getYear() + 1);
+			descricao.addAll(getDescricoes(startDate, result, ano, municipio));
+			descricao.addAll(getDescricoes(startDate, result, nextYear, municipio));
+		} else {
+			descricao = getDescricoes(startDate, result, ano, municipio);			
+		}
 		prazoDTO.setPrazoFinal(DataFormatter.formatoBRextenso(result));
 		prazoDTO.setDescricao(descricao);
 		return prazoDTO;

@@ -48,33 +48,25 @@ public class PrazoService {
 	           
     	
 	public PrazoResponseDTO addBusinessDays(LocalDate startDate, int days, String municipio) {
-		String ano = String.valueOf(startDate.getYear());
+		int ano = startDate.getYear();
 		PrazoResponseDTO prazoDTO = new PrazoResponseDTO();
-		Set<LocalDate> feriadosESuspensoes = getMergedFeriadosESuspensoes(ano, municipio);		
+		Set<LocalDate> feriadosESuspensoes = getMergedFeriadosESuspensoes(ano, municipio);
+		// o programa irá carregar os feriados do ano corrente e do ano seguinte:
+		feriadosESuspensoes.addAll(getMergedFeriadosESuspensoes(ano +1, municipio));
 				
-		LocalDate result = diaUtilSubsequente(startDate, feriadosESuspensoes);
-		int iterator = startDate.getYear();
+		LocalDate result = diaUtilSubsequente(startDate, feriadosESuspensoes);		
 		while (days > 0) {
 			result = result.plusDays(1);
 			boolean isWeekend = isWeekend(result);
 			boolean isHoliday = isHoliday(result, feriadosESuspensoes);
 			if (!(isHoliday || isWeekend)) {
 				days--;
-			}
-			/* caso durante o cálculo o resultado passar para o ano seguinte,
-			 * (consultas próximas ao fim do ano por exemplo)
-			 * o loop abaixo irá iterar ao menos uma vez para garantir o carregamento dos feriados e susp do ano seguinte */
-			while (iterator < result.getYear()) {
-				String nextYear = String.valueOf(startDate.getYear() + 1);
-				feriadosESuspensoes.addAll(getMergedFeriadosESuspensoes(nextYear, municipio));
-				iterator++;
-			}
+			}			
 		}
 		List<String> descricao = new ArrayList<>();
-		if (result.getYear() > startDate.getYear()) {
-			String nextYear = String.valueOf(startDate.getYear() + 1);
+		if (result.getYear() > startDate.getYear()) {			
 			descricao.addAll(getDescricoes(startDate, result, ano, municipio));
-			descricao.addAll(getDescricoes(startDate, result, nextYear, municipio));
+			descricao.addAll(getDescricoes(startDate, result, ano + 1, municipio));
 		} else {
 			descricao = getDescricoes(startDate, result, ano, municipio);			
 		}
@@ -91,19 +83,18 @@ public class PrazoService {
 		return proximoDia;
 	}
 	
-	private Set<LocalDate> getMergedFeriadosESuspensoes(String ano, String municipio) {
+	private Set<LocalDate> getMergedFeriadosESuspensoes(int ano, String municipio) {
         return FeriadoESuspensaoMerger.merge(
             feriadoRepository.getFeriados(ano, municipio),
             suspensaoRepository.getSuspensoes(ano, municipio)
         );
-    }
-	
+    }	
 	
 	// captura a descrição dos feriados dentro do período pesquisado
 	private List<String> getDescricoes(
 			LocalDate diaInicial, 
 			LocalDate diaFinal, 
-			String ano, 
+			int ano, 
 			String municipio
 			) {
 		
@@ -119,7 +110,7 @@ public class PrazoService {
 			// captura descricoes de feriados:
 			for (int i = 0; i < feriados.size(); i++) { 
 				if (feriados.get(i).getDate().equals(dia) 
-						&& !isWeekend(feriados.get(i).getDate())) { // verifica se feriado coincide com final de semana				
+						&& !isWeekend(feriados.get(i).getDate())) { // verifica se feriado coincide com final de semana para não exibir				
 					feriadoDescricoes.add(DataFormatter.formatoBR(feriados.get(i).getDate())
 							+ " - " + feriados.get(i).getDescription());
 				}

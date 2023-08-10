@@ -35,7 +35,8 @@ public class SuspensaoRepository {
 	}
 
 
-	public List<Suspensao> getSuspensoes(String ano, String municipio) {
+	public List<Suspensao> getSuspensoes(int ano, String municipio) {
+		
 		final String url = BASE_URL + "PesquisarSuspensoes?nomeMunicipio=" + municipio + "&ano=" + ano;
 		String response = null;
 		try {

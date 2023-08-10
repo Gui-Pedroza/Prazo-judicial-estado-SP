@@ -33,7 +33,7 @@ public class FeriadoRepository {
 		this.httpClient = httpClient;
 	}
 
-	public List<Feriado> getFeriados(String ano, String municipio) {
+	public List<Feriado> getFeriados(int ano, String municipio) {
 		final String url = BASE_URL + "PesquisarFeriados?nomeMunicipio=" + municipio + "&ano=" + ano;
 		String response = null;
 		try {

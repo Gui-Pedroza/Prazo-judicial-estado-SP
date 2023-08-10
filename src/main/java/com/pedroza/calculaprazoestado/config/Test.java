@@ -35,16 +35,16 @@ public class Test implements CommandLineRunner {
 		
 		
 		Set<LocalDate> feriadosESuspensoes = FeriadoESuspensaoMerger
-				.merge(feriadoRepository.getFeriados("2021", "Bauru"), suspensaoRepository.getSuspensoes("2021", "Bauru"));
+				.merge(feriadoRepository.getFeriados(2021, "Bauru"), suspensaoRepository.getSuspensoes(2021, "Bauru"));
 		
-		List<LocalDate> holydaysList = feriadoRepository.getFeriados("2021", "Bauru")
+		List<LocalDate> holydaysList = feriadoRepository.getFeriados(2021, "Bauru")
 				.stream()
 				.map(d -> d.getDate())
 				.collect(Collectors.toList());
 		
-		List<Suspensao> datas = suspensaoRepository.getSuspensoes("2020", "Lins");
+		List<Suspensao> datas = suspensaoRepository.getSuspensoes(2020, "Lins");
 		
-		List<Feriado> feriados = feriadoRepository.getFeriados("2023", "Ribeirão Preto");
+		List<Feriado> feriados = feriadoRepository.getFeriados(2023, "Ribeirão Preto");
 		
 				
 		

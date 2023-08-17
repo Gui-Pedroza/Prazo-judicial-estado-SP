@@ -35,6 +35,7 @@ button {
 
 button.botao-info {
   width: 155px;
+  margin-top: 10px;
 }
 
 .informacoes {

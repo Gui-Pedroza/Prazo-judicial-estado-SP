@@ -37,12 +37,12 @@ public class PrazoService {
         this.suspensaoRepository = suspensaoRepository;        
     }
 	
-	private boolean isWeekend(LocalDate date) {
+	protected boolean isWeekend(LocalDate date) {
 		return date.getDayOfWeek() == DayOfWeek.SATURDAY
 				|| date.getDayOfWeek() == DayOfWeek.SUNDAY;
 	}
 	
-	private boolean isHoliday(LocalDate date, Set<LocalDate> feriadosESuspensoes) {
+	protected boolean isHoliday(LocalDate date, Set<LocalDate> feriadosESuspensoes) {
 		return feriadosESuspensoes.contains(date);
 	}
 	           
@@ -74,8 +74,8 @@ public class PrazoService {
 		prazoDTO.setDescricao(descricao);
 		return prazoDTO;
 	}
-
-	public LocalDate diaUtilSubsequente(LocalDate startDate, Set<LocalDate> feriadosESuspensoes) {
+	
+	protected LocalDate diaUtilSubsequente(LocalDate startDate, Set<LocalDate> feriadosESuspensoes) {
 		LocalDate proximoDia = startDate;
 		while (isHoliday(proximoDia, feriadosESuspensoes) || isWeekend(proximoDia)) {
 			proximoDia = proximoDia.plusDays(1);
@@ -83,7 +83,7 @@ public class PrazoService {
 		return proximoDia;
 	}
 	
-	private Set<LocalDate> getMergedFeriadosESuspensoes(int ano, String municipio) {
+	protected Set<LocalDate> getMergedFeriadosESuspensoes(int ano, String municipio) {
         return FeriadoESuspensaoMerger.merge(
             feriadoRepository.getFeriados(ano, municipio),
             suspensaoRepository.getSuspensoes(ano, municipio)
@@ -91,7 +91,7 @@ public class PrazoService {
     }	
 	
 	// captura a descrição dos feriados dentro do período pesquisado
-	private List<String> getDescricoes(
+	protected List<String> getDescricoes(
 			LocalDate diaInicial, 
 			LocalDate diaFinal, 
 			int ano, 

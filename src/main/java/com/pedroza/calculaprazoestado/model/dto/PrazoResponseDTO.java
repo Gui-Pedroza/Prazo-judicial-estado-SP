@@ -7,8 +7,7 @@ public class PrazoResponseDTO {
 	private String prazoFinal;
 	private List<String> descricao;
 	
-	
-	
+		
 	public PrazoResponseDTO() {
 		
 	}

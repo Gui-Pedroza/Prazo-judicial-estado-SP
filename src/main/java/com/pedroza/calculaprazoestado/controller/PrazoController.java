@@ -18,7 +18,7 @@ import com.pedroza.calculaprazoestado.service.PrazoService;
 public class PrazoController {
 	
 	@Autowired
-	PrazoService prazoService;		
+	PrazoService prazoServiceCivel;		
 	
 	@PostMapping("/{city}")
 	public ResponseEntity<PrazoResponseDTO> calculate(			
@@ -26,9 +26,11 @@ public class PrazoController {
 			@RequestParam("daysToAdd") int daysToAdd, 
 			@PathVariable("city") String city
 			) {		
-		PrazoResponseDTO resultado = prazoService.addBusinessDays(startDate, daysToAdd, city);
+		PrazoResponseDTO resultado = prazoServiceCivel.addBusinessDays(startDate, daysToAdd, city);
 		return new ResponseEntity<PrazoResponseDTO>(resultado, HttpStatus.OK);
 	}
+	
+	
 
 }
 

@@ -16,7 +16,7 @@
 <body onload="loadMunicipios()" class="center">
 
 	<div class="form">
-		<h1>Calculadora de prazos processuais cíveis.</h1>
+		<h1>Calculadora de prazos processuais.</h1>
 		<h2>Digite a data de seu prazo inicial e a quantidade de dias do seu prazo</h2>
 		<!-- Data Inicial -->
 		<div class="input-group">
@@ -34,6 +34,20 @@
 			</label>
 		</div>
 
+		<!--Cível / penal radio buttons-->
+		<div class="input-group">
+			<div class="label">Prazo processual:</div>
+			<div class="prazos">
+				<div class="prazo">
+					<input type="radio" name="processual" id="civel" value="civel" checked>
+					<label for="civel">Processual Cível</label>
+				</div>
+				<div class="prazos">
+					<input type="radio" name="processual" id="penal" value="penal">
+					<label for="penal">Processual Penal</label>
+				</div>
+			</div>
+		</div>
 		<!-- Prazos -->
 		<div class="input-group">
 			<div class="label">Prazo</div>

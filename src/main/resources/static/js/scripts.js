@@ -5,15 +5,17 @@ function sendData() {
 	var startDate = document.getElementById("start-date").value
 	var daysToAdd = diasParaAdicionar
 	var city = document.getElementById("city").value
+	var prazoCivelRadioBtn = document.getElementsByName('processual')[0]
+	var tipoPrazo = prazoCivelRadioBtn.checked ? 'civel/' : 'penal/'
 	// valida input da quantidade de prazos
 	if (startDate == "") {
 		alert("Por favor, digite uma data válida")
 	} else if (daysToAdd === 0) {
 		alert("Por favor, selecione o prazo")
 	} else {
-		// Envia os dados usando AJAX
+		// Envia os dados usando AJAX		
 		var xhr = new XMLHttpRequest();
-		xhr.open("POST", "/" + city, true);
+		xhr.open("POST", tipoPrazo + city, true);
 		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
 		xhr.onreadystatechange = function () {
 			if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {

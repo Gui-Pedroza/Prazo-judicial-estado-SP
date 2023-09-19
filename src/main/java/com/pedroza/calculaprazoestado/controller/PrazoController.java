@@ -20,7 +20,7 @@ public class PrazoController {
 	@Autowired
 	PrazoService prazoServiceCivel;		
 	
-	@PostMapping("/{city}")
+	@PostMapping("/civel/{city}")
 	public ResponseEntity<PrazoResponseDTO> calculate(			
 			@RequestParam("startDate") LocalDate startDate,
 			@RequestParam("daysToAdd") int daysToAdd, 
@@ -30,6 +30,7 @@ public class PrazoController {
 		return new ResponseEntity<PrazoResponseDTO>(resultado, HttpStatus.OK);
 	}
 	
+	// TODO: endpoint do penal
 	
 
 }

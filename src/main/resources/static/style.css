@@ -18,7 +18,7 @@ body {
 
 .prazos {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap;  
 }
 
 .prazo span {
@@ -65,6 +65,7 @@ input:focus {
 
 .prazo label {
   padding-right: 10px;
+  
 }
 
 .form {
@@ -79,6 +80,7 @@ label span,
 .label {
   font-size: 12px;
   color: #666;  
+  margin-bottom: 5px;
 }
 
 .hidden {

@@ -37,6 +37,7 @@ public class PrazoServicePenal extends PrazoService {
 				feriadoESuspensaoDescricao.add(prazoFinalFDS);
 			} else if (feriadosESuspensoes.contains(finalDate)) {
 				// TODO: CAPTURAR A DESCRIÇÃO
+				// e organizar as classes de serviço
 				String prazoFinalEmFeriado = "O prazo final em feriado/suspensao. Prazo prorrogado para o próximo dia útil subsequente";
 				feriadoESuspensaoDescricao.add(prazoFinalEmFeriado);
 			}

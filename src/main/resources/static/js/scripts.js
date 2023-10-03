@@ -27,8 +27,11 @@ function sendData() {
 			return response.json();
 		})
 		.then(data => {
-			// agora só falta exibir o resultado na página com a resposta
-			console.log("Dados recebidos do servidor:", data);
+			let backEndFinalDate = data.prazoFinal
+			let backEndDescricao = data.descricao
+			console.log("Dados recebidos do servidor:", data, "Prazo final:", backEndFinalDate);
+			showPrazoFinal(backEndFinalDate)
+			showFeriados(backEndDescricao)
 		})
 		.catch(error => {
 			console.error("Erro:", error);

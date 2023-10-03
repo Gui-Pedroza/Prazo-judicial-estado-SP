@@ -33,11 +33,12 @@ public class PrazoServicePenal extends PrazoService {
 		if (feriadosESuspensoes.contains(finalDate) || isWeekend(finalDate)) {
 			if (isWeekend(finalDate)) {
 				String fds = finalDate.getDayOfWeek().equals(DayOfWeek.SATURDAY) ? "Sábado" : "Domingo";
-				String prazoFinalFDS = "O prazo final em " + fds + " será prorrogado para o próximo dia útil subsequente";
+				// TODO: mudar isso ta horrivel: 
+				String prazoFinalFDS = "O prazo final caiu em um " + fds + ". O resultado acima é dia útil subsequente";
 				feriadoESuspensaoDescricao.add(prazoFinalFDS);
 			} else if (feriadosESuspensoes.contains(finalDate)) {
 				// TODO: CAPTURAR A DESCRIÇÃO
-				// e organizar as classes de serviço
+				// e organizar as classes de serviço (tá uma bagunça a herança)
 				String prazoFinalEmFeriado = "O prazo final em feriado/suspensao. Prazo prorrogado para o próximo dia útil subsequente";
 				feriadoESuspensaoDescricao.add(prazoFinalEmFeriado);
 			}

@@ -16,38 +16,33 @@ import com.pedroza.calculaprazoestado.model.dto.PrazoResponseDTO;
 import com.pedroza.calculaprazoestado.service.PrazoServiceCivel;
 import com.pedroza.calculaprazoestado.service.PrazoServicePenal;
 
-
 @RestController
 public class PrazoController {
-	
+
 	@Autowired
 	PrazoServiceCivel prazoServiceCivel;
-	
+
 	@Autowired
 	PrazoServicePenal prazoServicePenal;
-	
+
 	@PostMapping("/civel/{city}")
-	public ResponseEntity<PrazoResponseDTO> calculateCivel(			
-			@RequestParam("startDate") LocalDate startDate,
-			@RequestParam("daysToAdd") int daysToAdd, 
-			@PathVariable("city") String city
-			) {		
+	public ResponseEntity<PrazoResponseDTO> calculateCivel(
+			@RequestBody PrazoRequestDTO requestObj,
+			@PathVariable("city") String city) {
+		LocalDate startDate = requestObj.getStartDate();
+		int daysToAdd = requestObj.getdaysToAdd();
 		PrazoResponseDTO resultado = prazoServiceCivel.addBusinessDays(startDate, daysToAdd, city);
 		return new ResponseEntity<PrazoResponseDTO>(resultado, HttpStatus.OK);
 	}
-	
+
 	@PostMapping("/penal/{city}")
 	public ResponseEntity<PrazoResponseDTO> calculatePenal(
 			@RequestBody PrazoRequestDTO requestObj,
 			@PathVariable("city") String city) {
 		LocalDate startDate = requestObj.getStartDate();
-		int daysToAdd = requestObj.getdaysToAdd();	
-		System.out.println("StartDate: " + startDate);
-	    System.out.println("DaysToAdd: " + daysToAdd);
+		int daysToAdd = requestObj.getdaysToAdd();		
 		PrazoResponseDTO resultado = prazoServicePenal.addNormalDays(startDate, daysToAdd, city);
 		return new ResponseEntity<PrazoResponseDTO>(resultado, HttpStatus.OK);
 	}
-	
 
 }
-

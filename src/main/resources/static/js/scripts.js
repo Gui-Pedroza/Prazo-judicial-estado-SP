@@ -7,15 +7,15 @@ function tipoDoPrazo() {
 }
 
 function sendData() {
-	let startDate = document.getElementById("start-date").value	
-	let city = document.getElementById("city").value	
+	let startDate = document.getElementById("start-date").value
+	let city = document.getElementById("city").value
 	let endPoint = tipoDoPrazo() + city
-	let url = 'http://localhost:8081/' + endPoint
+	let url = 'https://prazotjsp.azurewebsites.net/' + endPoint
 	const requestObj = {
 		startDate,
 		daysToAdd
 	}
-	
+
 	fetch(url, {
 		method: 'POST',
 		headers: {
@@ -31,7 +31,7 @@ function sendData() {
 		})
 		.then(data => {
 			let backEndFinalDate = data.prazoFinal
-			let backEndDescricao = data.descricao			
+			let backEndDescricao = data.descricao
 			showPrazoFinal(backEndFinalDate)
 			showFeriados(backEndDescricao)
 		})

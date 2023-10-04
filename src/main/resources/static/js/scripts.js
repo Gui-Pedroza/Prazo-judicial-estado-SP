@@ -31,8 +31,7 @@ function sendData() {
 		})
 		.then(data => {
 			let backEndFinalDate = data.prazoFinal
-			let backEndDescricao = data.descricao
-			console.log("Dados recebidos do servidor:", data, "Prazo final:", backEndFinalDate);
+			let backEndDescricao = data.descricao			
 			showPrazoFinal(backEndFinalDate)
 			showFeriados(backEndDescricao)
 		})

@@ -75,6 +75,41 @@ public class PrazoService {
 		return prazoDTO;
 	}
 	
+	public PrazoResponseDTO addNormalDays(LocalDate startDate, int days, String municipio) {
+		var prazoDTO = new PrazoResponseDTO();
+		List<String> feriadoESuspensaoDescricao = new ArrayList<>();
+		int ano = startDate.getYear();
+		Set<LocalDate> feriadosESuspensoes = getMergedFeriadosESuspensoes(ano, municipio);
+		if (startDate.getDayOfWeek().equals(DayOfWeek.FRIDAY)) {
+			startDate = startDate.plusDays(1);
+			startDate = diaUtilSubsequente(startDate, feriadosESuspensoes);
+		}
+		LocalDate finalDate = startDate;
+		// o programa irá carregar os feriados do ano corrente e do ano seguinte:
+		feriadosESuspensoes.addAll(getMergedFeriadosESuspensoes(ano +1, municipio));
+		while (days > 0) {
+			finalDate = finalDate.plusDays(1);
+			days--;
+		}
+		if (feriadosESuspensoes.contains(finalDate) || isWeekend(finalDate)) {
+			if (isWeekend(finalDate)) {
+				String fds = finalDate.getDayOfWeek().equals(DayOfWeek.SATURDAY) ? "Sábado" : "Domingo";				
+				String prazoFinalFDS = "O prazo final caiu em um " + fds + ". O resultado acima é o dia útil subsequente";
+				feriadoESuspensaoDescricao.add(prazoFinalFDS);
+			} else if (feriadosESuspensoes.contains(finalDate)) {				
+				String prazoFinalEmFeriado = "O prazo final caiu em feriado ou suspensao. O resultado acima é o dia útil subsequente";
+				feriadoESuspensaoDescricao.add(prazoFinalEmFeriado);
+			}
+
+			
+			finalDate = diaUtilSubsequente(finalDate, feriadosESuspensoes);
+			
+		}
+		prazoDTO.setPrazoFinal(DataFormatter.formatoBRextenso(finalDate));
+		prazoDTO.setDescricao(feriadoESuspensaoDescricao);
+		return prazoDTO;		
+	}
+	
 	protected LocalDate diaUtilSubsequente(LocalDate startDate, Set<LocalDate> feriadosESuspensoes) {
 		LocalDate proximoDia = startDate;
 		while (isHoliday(proximoDia, feriadosESuspensoes) || isWeekend(proximoDia)) {

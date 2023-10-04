@@ -29,9 +29,7 @@ public class Test implements CommandLineRunner {
 	public void run(String... args) throws Exception {		
 		var dto = new PrazoResponseDTO();
 		LocalDate startDate = LocalDate.of(2023, 10, 02);		
-		dto = prazoServicePenal.addNormalDays(startDate, 5, "Ribeirão Preto");	
-		System.out.println(dto.getPrazoFinal());
-		System.out.println(dto.getDescricao());
+		dto = prazoServicePenal.addNormalDays(startDate, 5, "Ribeirão Preto");			
 	}
 
 }

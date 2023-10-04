@@ -6,8 +6,8 @@
   font-family: "Roboto", sans-serif;
   border: none;
 }
-html,
-body {
+
+html, body {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -91,6 +91,7 @@ label span,
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 10px;
 }
 
 .feriados {
@@ -100,23 +101,17 @@ label span,
 .feriado {
   display: flex;
   align-items: center;
-}
-
-.feriado {
   background: #eee;
   margin-bottom: 10px;
   overflow: hidden;
   border-radius: 5px;
-}
-
-.feriado {
-  padding: 10px;
-  display: block;
+  padding: 10px;  
 }
 
 button {
   padding: 10px 15px;
   border-radius: 5px;
+  width: 100px;
   transition: all 200ms linear;
   font-weight: bold;
 }
@@ -149,7 +144,8 @@ button:hover {
 
 .botoes {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-around;
+  margin-bottom: 5px;
 }
 
 footer {
@@ -167,4 +163,8 @@ footer {
 
 .feriados .label {
   margin-bottom: 10px;
+}
+
+.descricao {
+    text-align: justify;
 }

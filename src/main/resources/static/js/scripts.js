@@ -1,12 +1,15 @@
-let diasParaAdicionar = 0
+let daysToAdd = 0
 
-function sendData() {
-	let startDate = document.getElementById("start-date").value
-	let daysToAdd = diasParaAdicionar
-	let city = document.getElementById("city").value
+function tipoDoPrazo() {
 	let prazoCivelRadioBtn = document.getElementsByName('processual')[0]
 	let tipoPrazo = prazoCivelRadioBtn.checked ? 'civel/' : 'penal/'
-	let endPoint = tipoPrazo + city
+	return tipoPrazo
+}
+
+function sendData() {
+	let startDate = document.getElementById("start-date").value	
+	let city = document.getElementById("city").value	
+	let endPoint = tipoDoPrazo() + city
 	let url = 'http://localhost:8081/' + endPoint
 	const requestObj = {
 		startDate,
@@ -50,13 +53,13 @@ function setDaysByRadioButton(value) {
 		} else {
 			outro.classList.remove(hiddenClassName)
 		}
-		diasParaAdicionar = +value
+		daysToAdd = +value
 	}
 }
 
 function setDaysByOther() {
 	let element = document.getElementById("prazo-value")
-	diasParaAdicionar = +element.value
+	daysToAdd = +element.value
 }
 
 function toggleInfo() {
@@ -85,7 +88,11 @@ function showFeriados(listaFeriados) {
 		feriados.classList.remove("hidden")
 		let label = document.createElement("div")
 		label.className = "label"
-		label.innerHTML = "Feriados e suspensões no período: "
+		if (tipoDoPrazo() === 'civel/') {
+			label.innerHTML = "Feriados e suspensões no período: "
+		} else if (tipoDoPrazo() === 'penal/') {
+			label.innerHTML = "Observações:"
+		}
 		feriados.appendChild(label)
 		for (let feriadoDescricao of listaFeriados) {
 			let feriado = document.createElement('div')

@@ -168,3 +168,12 @@ footer {
 .descricao {
     text-align: justify;
 }
+
+.manutencao {
+  text-align: justify;
+}
+
+.aviso {
+  font-size: 1.2em;
+  font-weight: bold;
+}

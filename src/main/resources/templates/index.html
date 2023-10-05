@@ -2,22 +2,42 @@
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<link rel="icon" type="image/jpeg" href="../static/favicon.png" />	
+	<link rel="icon" type="image/jpeg" href="../static/favicon.png" />
 	<link rel="stylesheet" type="text/css" href="../static/style.css">
 	<script src="../static/js/scripts.js" th:src="@{../static/js/scripts.js}"></script>
 	<script src="../static/js/cidades.js" th:src="@{../static/js/cidades.js}"></script>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5541949529539970"
-     crossorigin="anonymous"></script>
+		crossorigin="anonymous"></script>
 	<title>Calculadora de Prazos</title>
 </head>
 
 <body onload="loadMunicipios()" class="center">
 
 	<div class="form">
-		<h1>Calculadora de prazos processuais.</h1>
+		<h1>Calculadora de prazos processuais</h1>
 		<h2>Digite a data de seu prazo inicial e a quantidade de dias do seu prazo</h2>
+
+		<!-- 	AVISO DE URGENCIA	-->
+		<div class="manutencao">
+			<p><span class="aviso">ATENÇÃO:</span><br>
+			<ul>
+				<li>Devido à nova implantacao do sistema processual penal, alguns navegadores podem não atualizar de
+					imediato as novas alteracoes do sistema, fazendo com que o resultado não seja exibido na página.
+					Caso o problema persista mesmo após atualizar a página, sugiro apagar o cache do navegador através
+					do atalho CTRL + SHIFT + DEL
+				</li>
+				<li>
+					Conforme publicação no DJE de 03/10/2023 (migracao de processos da execução criminal) algumas  pesquisas de prazos da área cível também foram afetados, causando resultados imprecisos, já que o sistema foi projetado para acompanhar a página do TJ-SP de forma dinâmica. <br>
+					Peço que se atentem às pesquisas próximas ao período do mês de outubro e que aguardem a correção que será feita o mais breve possível.					
+				</li>
+			<p>Obrigado pela paciência e compreensão.</p>
+			<p>Qualquer dúvida e sugestão, fiquem a vontade para me contatar através do e-mail abaixo.</p>
+			</ul>
+
+			</p>
+		</div>
 		<!-- Data Inicial -->
 		<div class="input-group">
 			<label>
@@ -81,7 +101,7 @@
 			<button class="botao-limpar" onclick="window.location.reload()">Limpar</button>
 			<button class="botao-calcular" onclick="sendData()">Calcular</button>
 		</div>
-		
+
 		<!-- exibição dos feriados gerados dinamicamente -->
 		<div id="prazo-final" class="prazo-final hidden">
 			<div class="label">Prazo Final</div>
@@ -89,7 +109,7 @@
 		</div>
 
 		<div id="feriados" class="feriados hidden">
-			
+
 		</div>
 
 		<div class="center">
@@ -98,36 +118,40 @@
 
 		<div class="informacoes hidden">
 			<div class="informacoes">
-				<p>
-					O sistema acima é uma ferramenta simples, não oficial, para consulta de prazos processuais cíveis no
-					âmbito do
-					Tribunal
-					de Justiça
-					do Estado de São Paulo, para auxiliar advogados, serventia e colegas de trabalho na contagem de
-					prazos.
-					O resultado informado é calculado em dias úteis e com base na tabela de feriados e suspensão de
-					prazos do
-					site do <a href="https://www.tjsp.jus.br/CanaisComunicacao/Feriados/ExpedienteForense"
-						target="_blank" rel="external">Tribunal de Justiça</a> de acordo com cada região.<br>
-				</p>
-				<p>
-
-					No campo "Data inicial", digite a data do início do prazo, que poderá ser a data da publicação no
-					DJE, data
-					da juntada do Mandado ou AR, ou data da ciência do Ministério Público ou Defensoria no portal.<br>
-					Caso a data inicial coincida com feriado ou final de semana, o sistema automaticamente irá
-					considerar o
-					próximo dia útil subsequente no cálculo.
-
-				</p>
-				<p><strong>Atenção</strong>: Verifique <a
-						href="https://www.tjsp.jus.br/Indisponibilidade/Comunicados" target="_blank"
-						rel="external">neste link</a> se a data do seu prazo final se enquadra em algumas das situações
-					de indisponibilidade
-					de
-					sistemas, caso em que o prazo final será prorrogado para o dia útil seguinte á retomada de
-					funcionamento do
-					serviço (<em>Artigo 3º do Provimento CG Nº 26/2013</em>).</p>
+				<article>
+					<p>
+						O sistema acima é uma ferramenta simples, não oficial, para consulta de prazos processuais
+						cíveis no
+						âmbito do
+						Tribunal
+						de Justiça
+						do Estado de São Paulo, para auxiliar advogados, serventia e colegas de trabalho na contagem de
+						prazos.
+						O resultado informado é calculado em dias úteis e com base na tabela de feriados e suspensão de
+						prazos do
+						site do <a href="https://www.tjsp.jus.br/CanaisComunicacao/Feriados/ExpedienteForense"
+							target="_blank" rel="external">Tribunal de Justiça</a> de acordo com cada região.<br>
+					</p>
+					<p>
+						No campo "Data inicial", digite a data do início do prazo, que poderá ser a data da publicação
+						no
+						DJE, data
+						da juntada do Mandado ou AR, ou data da ciência do Ministério Público ou Defensoria no
+						portal.<br>
+						Caso a data inicial coincida com feriado ou final de semana, o sistema automaticamente irá
+						considerar o
+						próximo dia útil subsequente no cálculo.
+					</p>
+					<p><strong>Atenção</strong>: Verifique <a
+							href="https://www.tjsp.jus.br/Indisponibilidade/Comunicados" target="_blank"
+							rel="external">neste link</a> se a data do seu prazo final se enquadra em algumas das
+						situações
+						de indisponibilidade
+						de
+						sistemas, caso em que o prazo final será prorrogado para o dia útil seguinte á retomada de
+						funcionamento do
+						serviço (<em>Artigo 3º do Provimento CG Nº 26/2013</em>).</p>
+				</article>
 			</div>
 		</div>
 

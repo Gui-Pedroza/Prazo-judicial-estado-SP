@@ -27,19 +27,17 @@ public class SuspensaoRepository {
 	public SuspensaoRepository() {
 		
 	}
-	
-	
+		
 	public SuspensaoRepository(HttpClient httpClient) {		
 		this.httpClient = httpClient;
 	}
-
 
 	public List<Suspensao> getSuspensoes(int ano, String municipio) {
 		
 		final String url = BASE_URL + "PesquisarSuspensoes?nomeMunicipio=" + municipio + "&ano=" + ano;
 		String response = null;
 		try {
-			response = httpClient.get(url);
+			response = httpClient.get(url);			
 		} catch (IOException e) {
 			
 			e.printStackTrace();
@@ -56,7 +54,7 @@ public class SuspensaoRepository {
 			Map feriadoObj = (Map) suspensoes.get(i);
 			String descricao = feriadoObj.get("Descricao").toString();
 			LocalDate dataInicial = parseDate(feriadoObj.get("DataInicial").toString());
-			LocalDate dataFinal = parseDate(feriadoObj.get("DataFinal").toString());
+			LocalDate dataFinal = parseDate(feriadoObj.get("DataFinal").toString());			
 			suspensaoList.add(new Suspensao(descricao, dataInicial, dataFinal));
 		}		
 		return suspensaoList;

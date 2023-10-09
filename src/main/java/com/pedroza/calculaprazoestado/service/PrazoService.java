@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,8 +51,14 @@ public class PrazoService {
     	
 	public PrazoResponseDTO addBusinessDays(LocalDate startDate, int days, String municipio) {
 		int ano = startDate.getYear();
-		PrazoResponseDTO prazoDTO = new PrazoResponseDTO();
+		var prazoDTO = new PrazoResponseDTO();
+		// TODO: fazer um pipeline para remover da coleçÀo abaixo o periodo 03/10/2023 a 31/10/2023 
 		Set<LocalDate> feriadosESuspensoes = getMergedFeriadosESuspensoes(ano, municipio);
+		/* SÓ TESTANDO AS DATAS EM ORDEM:
+		SortedSet<LocalDate> sortedDatas = new TreeSet<>();
+		sortedDatas.addAll(feriadosESuspensoes);
+		System.out.println(sortedDatas);
+		*/
 		// o programa irá carregar os feriados do ano corrente e do ano seguinte:
 		feriadosESuspensoes.addAll(getMergedFeriadosESuspensoes(ano +1, municipio));
 				

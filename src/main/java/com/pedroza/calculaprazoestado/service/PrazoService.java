@@ -2,6 +2,7 @@ package com.pedroza.calculaprazoestado.service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.pedroza.calculaprazoestado.common.FeriadoESuspensaoMerger;
 import com.pedroza.calculaprazoestado.common.util.DataFormatter;
+import com.pedroza.calculaprazoestado.common.util.CollectionsHandler;
 import com.pedroza.calculaprazoestado.model.Feriado;
 import com.pedroza.calculaprazoestado.model.Suspensao;
 import com.pedroza.calculaprazoestado.model.dto.PrazoResponseDTO;
@@ -52,21 +54,26 @@ public class PrazoService {
 	public PrazoResponseDTO addBusinessDays(LocalDate startDate, int days, String municipio) {
 		int ano = startDate.getYear();
 		var prazoDTO = new PrazoResponseDTO();
-		// TODO: fazer um pipeline para remover da coleçÀo abaixo o periodo 03/10/2023 a 31/10/2023 
+		
 		Set<LocalDate> feriadosESuspensoes = getMergedFeriadosESuspensoes(ano, municipio);
-		/* SÓ TESTANDO AS DATAS EM ORDEM:
-		SortedSet<LocalDate> sortedDatas = new TreeSet<>();
-		sortedDatas.addAll(feriadosESuspensoes);
-		System.out.println(sortedDatas);
-		*/
+		/* 
+		 * Em caráter transitório, devido a suspensão de prazos do mes inteiro de outubro
+		 * foi necessário remover as datas de suspensões manualmente (via classe utilitária CollectionsHandler)
+		 * já que a suspensão não se aplica ao cível, conforme as 3 linhas abaixo
+		 *  
+		 */
+		Set<LocalDate> feriadosESuspensoesSemOutubro = CollectionsHandler.removeFullMonth(feriadosESuspensoes, Month.OCTOBER);
+		CollectionsHandler.addDate(feriadosESuspensoesSemOutubro, LocalDate.of(2023, 10, 12));
+		CollectionsHandler.addDate(feriadosESuspensoesSemOutubro, LocalDate.of(2023, 10, 13));
+		
 		// o programa irá carregar os feriados do ano corrente e do ano seguinte:
-		feriadosESuspensoes.addAll(getMergedFeriadosESuspensoes(ano +1, municipio));
+		feriadosESuspensoesSemOutubro.addAll(getMergedFeriadosESuspensoes(ano +1, municipio));
 				
-		LocalDate result = diaUtilSubsequente(startDate, feriadosESuspensoes);		
+		LocalDate result = diaUtilSubsequente(startDate, feriadosESuspensoesSemOutubro);		
 		while (days > 0) {
 			result = result.plusDays(1);
 			boolean isWeekend = isWeekend(result);
-			boolean isHoliday = isHoliday(result, feriadosESuspensoes);
+			boolean isHoliday = isHoliday(result, feriadosESuspensoesSemOutubro);
 			if (!(isHoliday || isWeekend)) {
 				days--;
 			}			
@@ -78,8 +85,15 @@ public class PrazoService {
 		} else {
 			descricao = getDescricoes(startDate, result, ano, municipio);			
 		}
-		prazoDTO.setPrazoFinal(DataFormatter.formatoBRextenso(result));
-		prazoDTO.setDescricao(descricao);
+		/*
+		 * Neste trecho, foi necessário também remover a descriçào do período do mês de outubro
+		 * Foi feita a remoção via classe utilitária da descricao
+		 * */
+		String descricaoOutubroRemover = "03-10-2023 a 31-10-2023";
+		CollectionsHandler.removeElementFromList(descricao, descricaoOutubroRemover);
+		System.out.println(descricao);
+		
+		prazoDTO.setPrazoFinal(DataFormatter.formatoBRextenso(result));		
 		return prazoDTO;
 	}
 	
@@ -149,6 +163,7 @@ public class PrazoService {
 		
 		List<String> descricoesFeriadoESuspensao = new ArrayList<>();
 		LocalDate dia = diaInicial;
+		// esse laço while fará uma verredura dentro do período pesquisado:
 		while (dia.isBefore(diaFinal)) {
 			// captura descricoes de feriados:
 			for (int i = 0; i < feriados.size(); i++) { 
@@ -167,7 +182,7 @@ public class PrazoService {
 				} else if (suspensoes.get(i).getInitialDate().equals(dia)) {
 					suspensaoDescricoes.add(DataFormatter.formatoBR(suspensoes.get(i).getInitialDate())
 							+ " a " + DataFormatter.formatoBR(suspensoes.get(i).getFinalDate())
-							+ " - " + suspensoes.get(i).getDescription());
+							+ " - " + suspensoes.get(i).getDescription());					
 				}
 			}
 			dia = dia.plusDays(1);

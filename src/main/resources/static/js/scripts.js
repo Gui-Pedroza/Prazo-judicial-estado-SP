@@ -26,7 +26,7 @@ function sendData() {
 	})
 		.then(response => {
 			if (!response.ok) {
-				throw new Error("Erro ao enviar os dados");
+				throw new Error("Erro ao receber os dados");
 			}
 			return response.json();
 		})

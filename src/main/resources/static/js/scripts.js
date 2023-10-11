@@ -10,8 +10,8 @@ function sendData() {
 	let startDate = document.getElementById("start-date").value
 	let city = document.getElementById("city").value
 	let endPoint = tipoDoPrazo() + city
-	// let url = 'https://prazotjsp.azurewebsites.net/' + endPoint
-	let url = 'http://localhost:8081/' + endPoint
+	let url = 'https://prazotjsp.azurewebsites.net/' + endPoint
+	// let url = 'http://localhost:8081/' + endPoint
 	const requestObj = {
 		startDate,
 		daysToAdd

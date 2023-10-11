@@ -4,7 +4,7 @@
   outline: none;
   box-sizing: border-box;
   font-family: "Roboto", sans-serif;
-  border: none;
+  border: none;  
 }
 
 h1 {
@@ -18,6 +18,9 @@ html, body {
   position: relative;
   background: #fcfcfc;
   width: 100%;
+  background-image: url('../assets/images/1245638_3096.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;  
 }
 
 .prazos {
@@ -142,7 +145,7 @@ button:hover {
 }
 
 .botao-limpar {
-  background: #b9b002e7;
+  background: #e48322e7;
   margin-right: 10px;
 }
 

@@ -19,16 +19,38 @@
 		<h1>Calculadora de prazos processuais</h1>
 		<h2>Digite a data de seu prazo inicial e a quantidade de dias do seu prazo</h2>
 
+		<section class="instrucoes">
+			<p>
+				O sistema abaixo é uma ferramenta de simples consulta, não oficial, feito para auxiliar advogados,
+				serventia e colegas de trabalho no cálculo de prazos processuais no âmbito do Tribunal de Justiça de São
+				Paulo, de acordo com a página de <a
+					href="https://www.tjsp.jus.br/CanaisComunicacao/Feriados/ExpedienteForense" class="link"
+					target="_blank" rel="external">Suspensões de Prazos</a> do TJ.<br>
+			</p>
+			<p>Para a opção <em>Processual Cível</em>, o resultado será calculado em dias úteis. Não serão considerados
+				suspensões, recesso e feriados, inclusive locais, conforme a região escolhida. Se a data do início do
+				prazo for feriado/suspensão ou final de semana, o sistema irá automaticamente considerar como dia
+				inicial o primeiro dia útil subsequente.
+			</p>
+			<p>
+				Na opção <em>Processual Penal</em>, a contagem será em dias corridos. Caso a data final seja final de
+				semana, feriado ou suspensão, será considerado o próximo dia útil subsequente.
+			</p>
+		</section>
+
 		<!-- 	AVISO DE URGENCIA	-->
 		<div class="manutencao">
 			<p><span class="aviso">ATENÇÃO:</span><br>
-			<ul>				
+			<ul>
 				<li>
-					Conforme publicação no DJE de 03/10/2023 (migracao de processos da execução criminal) algumas  pesquisas de prazos da área cível também foram afetados, causando resultados imprecisos, já que o sistema foi projetado para acompanhar a página do TJ-SP de forma dinâmica. <br>
-					Peço que se atentem às pesquisas próximas ao período do mês de outubro e que aguardem a correção que será feita o mais breve possível.					
+					Conforme publicação no DJE de 03/10/2023 (migracao de processos da execução criminal) algumas
+					pesquisas de prazos da área cível também foram afetados, causando resultados imprecisos, já que o
+					sistema foi projetado para acompanhar a página do TJ-SP de forma dinâmica. <br>
+					Peço que se atentem às pesquisas próximas ao período do mês de outubro e que aguardem a correção que
+					será feita o mais breve possível.
 				</li>
-			<p>Obrigado pela paciência e compreensão.</p>
-			<p>Qualquer dúvida e sugestão, fiquem a vontade para me contatar através do e-mail abaixo.</p>
+				<p>Obrigado pela paciência e compreensão.</p>
+				<p>Qualquer dúvida e sugestão, fiquem a vontade para me contatar através do e-mail abaixo.</p>
 			</ul>
 
 			</p>
@@ -86,7 +108,7 @@
 				<label>
 					<span>Outro dia</span>
 					<input type="number" min="1" id="prazo-value" class="outro-prazo-input" onchange="setDaysByOther()"
-						placeholder="Outro dia">
+						placeholder="quantidade">
 				</label>
 			</div>
 		</div>
@@ -108,44 +130,29 @@
 		</div>
 
 		<div class="center">
-			<button class="botao-info" onclick="toggleInfo()">Mostrar informações</button>
+			<button class="botao-info" onclick="toggleInfo()">Informações importantes</button>
 		</div>
 
 		<div class="informacoes hidden">
 			<div class="informacoes">
 				<article>
-					<p>
-						O sistema acima é uma ferramenta simples, não oficial, para consulta de prazos processuais
-						cíveis no
-						âmbito do
-						Tribunal
-						de Justiça
-						do Estado de São Paulo, para auxiliar advogados, serventia e colegas de trabalho na contagem de
-						prazos.
-						O resultado informado é calculado em dias úteis e com base na tabela de feriados e suspensão de
-						prazos do
-						site do <a href="https://www.tjsp.jus.br/CanaisComunicacao/Feriados/ExpedienteForense"
-							target="_blank" rel="external">Tribunal de Justiça</a> de acordo com cada região.<br>
-					</p>
-					<p>
-						No campo "Data inicial", digite a data do início do prazo, que poderá ser a data da publicação
-						no
-						DJE, data
-						da juntada do Mandado ou AR, ou data da ciência do Ministério Público ou Defensoria no
-						portal.<br>
-						Caso a data inicial coincida com feriado ou final de semana, o sistema automaticamente irá
-						considerar o
-						próximo dia útil subsequente no cálculo.
-					</p>
-					<p><strong>Atenção</strong>: Verifique <a
-							href="https://www.tjsp.jus.br/Indisponibilidade/Comunicados" target="_blank"
-							rel="external">neste link</a> se a data do seu prazo final se enquadra em algumas das
-						situações
-						de indisponibilidade
-						de
-						sistemas, caso em que o prazo final será prorrogado para o dia útil seguinte á retomada de
-						funcionamento do
-						serviço (<em>Artigo 3º do Provimento CG Nº 26/2013</em>).</p>
+					<span class="aviso">Atenção:</span>
+					<ul>
+						<li>
+							<p>Verifique <a
+									href="https://www.tjsp.jus.br/Indisponibilidade/Comunicados" class="link" target="_blank"
+									rel="external">neste link</a> se a data do seu prazo final se enquadra em algumas das
+								situações
+								de indisponibilidade
+								de
+								sistemas, caso em que o prazo final será prorrogado para o dia útil seguinte á retomada de
+								funcionamento do
+								serviço (<em>Artigo 3º do Provimento CG Nº 26/2013</em>).</p>
+						</li>
+						<li>
+							<p>Algumas suspensões são específicas e somente para determinados ofícios judiciais, de acordo com a matéria ou particularidade de cada comarca. Favor, atentar-se para as descrições que serão exibidas para cada período pesquisado.</p>
+						</li>
+					</ul>
 				</article>
 			</div>
 		</div>

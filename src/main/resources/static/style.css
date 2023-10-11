@@ -7,6 +7,10 @@
   border: none;
 }
 
+h1 {
+  text-align: center;
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -32,9 +36,13 @@ button {
   background: none;
   cursor: pointer;
 }
+
 .informacoes {
   text-align: justify;
-  text-indent: 20px;
+} 
+.instrucoes {
+  text-align: justify;
+  text-indent: 30px;
 }
 
 input[type="text"],
@@ -74,6 +82,16 @@ input:focus {
   max-width: 100%;
   margin: auto;
   height: 100%;
+}
+
+.link {
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.link:hover {
+  text-decoration: underline;
+  color: rgba(0, 0, 0, 0.500);
 }
 
 label span,
@@ -134,10 +152,9 @@ button:hover {
 }
 
 .botao-info {
-  background: #dee;
+  background: #dee;  
   color: #666;
-  text-align: center;
-  margin-bottom: 20px;
+  text-align: center;  
   width: 155px;
   margin-top: 10px;
 }
@@ -171,6 +188,7 @@ footer {
 
 .manutencao {
   text-align: justify;
+  display: none;
 }
 
 .aviso {

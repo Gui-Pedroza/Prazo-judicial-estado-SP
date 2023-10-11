@@ -90,10 +90,9 @@ public class PrazoService {
 		 * Foi feita a remoção via classe utilitária da descricao
 		 * */
 		String descricaoOutubroRemover = "03-10-2023 a 31-10-2023";
-		CollectionsHandler.removeElementFromList(descricao, descricaoOutubroRemover);
-		System.out.println(descricao);
-		
-		prazoDTO.setPrazoFinal(DataFormatter.formatoBRextenso(result));		
+		CollectionsHandler.removeElementFromList(descricao, descricaoOutubroRemover);		
+		prazoDTO.setPrazoFinal(DataFormatter.formatoBRextenso(result));
+		prazoDTO.setDescricao(descricao);
 		return prazoDTO;
 	}
 	
@@ -128,7 +127,7 @@ public class PrazoService {
 			
 		}
 		prazoDTO.setPrazoFinal(DataFormatter.formatoBRextenso(finalDate));
-		prazoDTO.setDescricao(feriadoESuspensaoDescricao);
+		prazoDTO.setDescricao(feriadoESuspensaoDescricao);		
 		return prazoDTO;		
 	}
 	

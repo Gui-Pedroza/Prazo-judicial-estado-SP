@@ -29,8 +29,7 @@ public class CollectionsHandler {
 	public static void removeElementFromList(List<String> list, String startsWithString) {
 		for (int i = 0; i < list.size(); i++) {
 			if (list.get(i).startsWith(startsWithString)) {
-				boolean fuiRemovido = list.remove(list.get(i));
-				System.out.println(fuiRemovido);
+				list.remove(list.get(i));				
 			}
 		}
 	}

@@ -10,8 +10,8 @@ function sendData() {
 	let startDate = document.getElementById("start-date").value
 	let city = document.getElementById("city").value
 	let endPoint = tipoDoPrazo() + city
-	let url = 'https://prazotjsp.azurewebsites.net/' + endPoint
-	// let url = 'http://localhost:8081/' + endPoint
+	// let url = 'https://prazotjsp.azurewebsites.net/' + endPoint
+	let url = 'http://localhost:8081/' + endPoint
 	const requestObj = {
 		startDate,
 		daysToAdd
@@ -64,10 +64,10 @@ function setDaysByOther() {
 
 function toggleInfo() {
 	let infoButton = document.getElementsByClassName("botao-info")[0]
-	if (infoButton.textContent === "Mostrar informações") {
+	if (infoButton.textContent === "Informações importantes") {
 		infoButton.textContent = "Esconder"
 	} else {
-		infoButton.textContent = "Mostrar informações"
+		infoButton.textContent = "Informações importantes"
 	}
 	let info = document.getElementsByClassName("informacoes")[0]
 	info.classList.toggle("hidden")
@@ -82,7 +82,7 @@ function showPrazoFinal(prazoFinalValue) {
 }
 
 function showFeriados(listaFeriados) {
-	let feriados = document.getElementById("feriados")
+	let feriados = document.getElementById("feriados")	
 	if (listaFeriados.length != 0) {
 		feriados.innerHTML = ""
 		feriados.classList.remove("hidden")

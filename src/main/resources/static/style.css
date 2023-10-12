@@ -18,7 +18,7 @@ html, body {
   position: relative;
   background: #fcfcfc;
   width: 100%;
-  background-image: url('../assets/images/1245638_3096.jpg');
+  background-image: url('images/1245638_3096.jpg');
   background-size: cover;
   background-repeat: no-repeat;  
 }
